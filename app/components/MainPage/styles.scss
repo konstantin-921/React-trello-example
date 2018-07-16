@@ -1,0 +1,100 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #333;
+  font: 14px Arial, Helvetica, sans-serif;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.header {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  height: 32px;
+  padding: 4px;
+  background-color: rgb(74, 76, 77);
+
+  .button-share {
+    margin-left: auto;
+  }
+
+  .button-logout {
+    margin-left: 30px;
+  }
+
+  .button-save-board {
+    margin-left: 20px;
+    min-width: 90px;
+  }
+
+  .share-input {
+    display: block;
+    width: 30%;
+    height: 25px;
+  }
+
+  .dropMenu-container {
+    position: relative;
+  }
+}
+
+.main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  color: white;
+}
+
+.task-container {
+  width: 32%;
+  margin-top: 5px;
+  border-radius: 3px;
+  background-color: rgb(119, 122, 124);
+  text-align: center;
+
+  .add-link {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(119, 122, 124)), to(rgb(74, 76, 77)));
+    background-image: -webkit-linear-gradient(top, rgb(119, 122, 124), rgb(74, 76, 77));
+    background-image: -moz-linear-gradient(top, rgb(119, 122, 124), rgb(74, 76, 77));
+    background-image: -ms-linear-gradient(top, rgb(119, 122, 124), rgb(74, 76, 77));
+    background-image: -o-linear-gradient(top, rgb(119, 122, 124), rgb(74, 76, 77));
+    background-image: linear-gradient(top, rgb(119, 122, 124)6, rgb(74, 76, 77));
+    
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    
+      -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+      -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;    
+    
+    border: none;
+    height: 50px;
+    padding: 0;
+    width: 100%;
+    cursor: pointer;
+    font: bold 15px Arial, Helvetica;
+    color: #fff;
+
+    &:hover, &:focus {
+      background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(74, 76, 77)), to(rgb(119, 122, 124)));
+      background-image: -webkit-linear-gradient(top, rgb(74, 76, 77), rgb(119, 122, 124));
+      background-image: -moz-linear-gradient(top, rgb(74, 76, 77), rgb(119, 122, 124));
+      background-image: -ms-linear-gradient(top, rgb(74, 76, 77), rgb(119, 122, 124));
+      background-image: -o-linear-gradient(top, rgb(74, 76, 77), rgb(119, 122, 124));
+      background-image: linear-gradient(top, rgb(74, 76, 77), rgb(119, 122, 124));
+      outline: none;
+    }
+
+    &:active {
+      outline: none;
+      -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+      -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+    }
+  }
+}

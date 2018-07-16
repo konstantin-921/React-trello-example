@@ -1,5 +1,5 @@
 {
-  "name": "react-webpack-boilerplate",
+  "name": "react-trello-example",
   "version": "2.1.0",
   "description": "Minimalistic ES6 React boilerplate",
   "main": "index.js",
@@ -12,7 +12,7 @@
     "test:watch": "jest --watch",
     "coverage": "jest --coverage"
   },
-  "author": "Kliment Petrov <kleopetroff@gmail.com>",
+  "author": "Podleshy Konstantin",
   "license": "MIT",
   "jest": {
     "setupFiles": [
@@ -40,6 +40,7 @@
     "husky": "^0.14.3",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
+    "react-beautiful-dnd": "^8.0.3",
     "react-debounce-input": "^3.2.0",
     "react-dom": "16.4.0",
     "react-hot-loader": "4.2.0",
@@ -72,7 +73,7 @@
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.8.2",
     "extract-text-webpack-plugin": "3.0.2",
-    "file-loader": "1.1.10",
+    "file-loader": "^1.1.11",
     "html-webpack-plugin": "3.2.0",
     "jest": "22.1.0",
     "node-sass": "^4.9.0",
