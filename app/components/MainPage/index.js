@@ -11,11 +11,11 @@ class MainPage extends React.Component {
       toggleDropdown: false,
     };
   }
-  toggleDropdown = () => {
-    this.setState({ toggleDropdown: !this.state.toggleDropdown });
-  }
   logout = () => {
     localStorage.clear();
+  }
+  toggleDropdown = () => {
+    this.setState({ toggleDropdown: !this.state.toggleDropdown });
   }
   render() {
     const path = this.props.location.pathname;

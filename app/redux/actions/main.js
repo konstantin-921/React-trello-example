@@ -2,7 +2,7 @@ import api from '../../services/api';
 
 const localhost = 'http://localhost:3000';
 
-export const addBoard = (data) => {
+export const receiveBoard = (data) => {
   return {
     type: 'ADD_BOARD',
     data,
@@ -16,34 +16,12 @@ export const setCurrentBoard = (data) => {
   };
 };
 
-// export const pushTask = (data) => {
-//   return {
-//     type: 'ADD_TASK',
-//     data,
-//   };
-// };
-
 export const receiveTask = (data) => {
   return {
     type: 'ADD_TASK',
     data,
   };
 };
-
-// export function sendTask(data) {
-//   const userData = {
-//     data,
-//   };
-//   return (dispatch) => {
-//     return api.post(`${localhost}/tasks`, userData)
-//       .then((response) => {
-//         return dispatch(pushTask(response.data));
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   };
-// }
 
 export function getTasks(id) {
   const userData = {
@@ -71,7 +49,7 @@ export function getBoard() {
   return (dispatch) => {
     return api.get(url)
       .then((response) => {
-        return dispatch(addBoard(response.data));
+        return dispatch(receiveBoard(response.data));
       })
       .catch((error) => {
         console.log(error);
