@@ -1,5 +1,6 @@
 html, body  {
   height: 100%;
+  min-width: 500px;
 }
 
 body  {
@@ -55,5 +56,13 @@ body  {
     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
     -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+  }
+}
+
+.input {
+  border: none;
+  &:active, &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ffb339;
   }
 }

@@ -2,18 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Task from '../common/Task';
 import FormNewTask from '../common/FormNewTask';
-import { getTasks, setCurrentBoard } from '../../redux/actions/main';
 
 const mapStateToProps = ({ reducerMain }) => ({
   reducerMain,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getTasks: id => dispatch(getTasks(id)),
-  setCurrentBoard: data => dispatch(setCurrentBoard(data)),
-});
-
-class MainContent extends React.Component {
+class DefaultContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,20 +15,13 @@ class MainContent extends React.Component {
       formIsOpenDoing: false,
       formIsOpenDone: false,
       status: '',
+      localId: 0,
     };
   }
-  componentDidMount() {
-    if (this.props.match.params.caption) {
-      this.props.getTasks(this.props.match.params.caption);
-      this.props.setCurrentBoard(this.props.match.params.caption);
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.caption
-      && this.props.match.params.caption
-      !== nextProps.match.params.caption) {
-      this.props.getTasks(nextProps.match.params.caption);
-    }
+  counterId = () => {
+    this.setState(prevState => ({
+      localId: prevState.localId + 1,
+    }));
   }
   closeFormNewTaskTodo = () => {
     this.setState({ formIsOpenTodo: false });
@@ -47,17 +34,32 @@ class MainContent extends React.Component {
   }
   openNewTaskTodo = () => {
     if (this.state.formIsOpenTodo) {
-      return <FormNewTask status={this.state.status} close={this.closeFormNewTaskTodo} />;
+      return (<FormNewTask
+        status={this.state.status}
+        id={this.state.localId}
+        counter={this.counterId}
+        close={this.closeFormNewTaskTodo}
+      />);
     } return null;
   }
   openNewTaskDoing = () => {
     if (this.state.formIsOpenDoing) {
-      return <FormNewTask status={this.state.status} close={this.closeFormNewTaskDoing} />;
+      return (<FormNewTask
+        status={this.state.status}
+        id={this.state.localId}
+        counter={this.counterId}
+        close={this.closeFormNewTaskDoing}
+      />);
     } return null;
   }
   openNewTaskDone = () => {
     if (this.state.formIsOpenDone) {
-      return <FormNewTask status={this.state.status} close={this.closeFormNewTaskDone} />;
+      return (<FormNewTask
+        status={this.state.status}
+        id={this.state.localId}
+        counter={this.counterId}
+        close={this.closeFormNewTaskDone}
+      />);
     } return null;
   }
   toggleFormTodo = () => {
@@ -73,7 +75,7 @@ class MainContent extends React.Component {
     this.setState({ status: event.target.value });
   }
   renderItemTodo = () => {
-    const array = this.props.reducerMain.tasks.filter((elem) => {
+    const array = this.props.reducerMain.defaultTasks.filter((elem) => {
       return elem.status === 'TO_DO';
     });
     return array.map((elem) => {
@@ -81,7 +83,7 @@ class MainContent extends React.Component {
     });
   }
   renderItemDoing = () => {
-    const array = this.props.reducerMain.tasks.filter((elem) => {
+    const array = this.props.reducerMain.defaultTasks.filter((elem) => {
       return elem.status === 'DOING';
     });
     return array.map((elem) => {
@@ -89,7 +91,7 @@ class MainContent extends React.Component {
     });
   }
   renderItemDone = () => {
-    const array = this.props.reducerMain.tasks.filter((elem) => {
+    const array = this.props.reducerMain.defaultTasks.filter((elem) => {
       return elem.status === 'DONE';
     });
     return array.map((elem) => {
@@ -147,4 +149,4 @@ class MainContent extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainContent);
+export default connect(mapStateToProps)(DefaultContent);

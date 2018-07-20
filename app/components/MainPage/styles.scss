@@ -29,8 +29,25 @@
     min-width: 90px;
   }
 
+  .button-save-board-disable {
+    background-color: #7a7a79;
+    background-image: none;
+
+    border-color: #7a7a79;
+    color: #252525;
+
+    &:hover, &:focus {
+      background-color: #7a7a79;
+      background-image: none;
+      outline: none;
+    }
+  }
+
   .share-input {
     display: block;
+    margin-top: 1px;
+    margin-left: 5px;
+    border-radius: 5px; 
     width: 30%;
     height: 25px;
   }

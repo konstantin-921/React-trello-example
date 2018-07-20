@@ -4,7 +4,14 @@ const localhost = 'http://localhost:3000';
 
 export const receiveBoard = (data) => {
   return {
-    type: 'ADD_BOARD',
+    type: 'RECEIVE_BOARD',
+    data,
+  };
+};
+
+export const addDefaultTask = (data) => {
+  return {
+    type: 'ADD_DEFAULT_TASK',
     data,
   };
 };
@@ -16,10 +23,29 @@ export const setCurrentBoard = (data) => {
   };
 };
 
-export const receiveTask = (data) => {
+export const removeDefaultTask = (data) => {
   return {
-    type: 'ADD_TASK',
+    type: 'REMOVE_DEFAULT_TASK',
     data,
+  };
+};
+
+export const receiveTasks = (data) => {
+  return {
+    type: 'RECEIVE_TASKS',
+    data,
+  };
+};
+
+export const clearTasks = () => {
+  return {
+    type: 'CLEAR_TASKS',
+  };
+};
+
+export const clearCurrentBoard = () => {
+  return {
+    type: 'CLEAR_CURRENT_BOARD',
   };
 };
 
@@ -32,7 +58,7 @@ export function getTasks(id) {
   return (dispatch) => {
     return api.get(url)
       .then((response) => {
-        return dispatch(receiveTask(response.data));
+        return dispatch(receiveTasks(response.data));
       })
       .catch((error) => {
         console.log(error);

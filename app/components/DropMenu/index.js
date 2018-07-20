@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getBoard } from '../../redux/actions/main';
+import { Link } from 'react-router-dom';
+import { getBoard, setCurrentBoard } from '../../redux/actions/main';
 import FormNewBoard from '../common/FormNewBoard';
 import BoardLink from '../common/BoardLink';
 import './styles.scss';
@@ -11,6 +12,7 @@ const mapStateToProps = ({ reducerMain }) => ({
 
 const mapDispatchToProps = dispatch => ({
   getBoard: () => dispatch(getBoard()),
+  setCurrentBoard: data => dispatch(setCurrentBoard(data)),
 });
 
 class DropMenu extends React.Component {
@@ -23,6 +25,10 @@ class DropMenu extends React.Component {
   componentDidMount() {
     this.props.getBoard();
   }
+  setBoard = () => {
+    const id = null;
+    this.props.setCurrentBoard(id);
+  }
   toggleNewBoard = () => {
     this.setState({ toggleNewBoard: !this.state.toggleNewBoard });
   }
@@ -31,7 +37,7 @@ class DropMenu extends React.Component {
   }
   renderBoardsLink = () => {
     return this.props.reducerMain.boards.map((elem) => {
-      return <BoardLink key={elem.id} data={elem.caption} id={elem.id} />;
+      return <BoardLink key={elem.id} elem={elem} />;
     });
   }
   render() {
@@ -40,6 +46,15 @@ class DropMenu extends React.Component {
     return (
       <div className="dropMenu">
         <ul>
+          <li>
+            <Link
+              onClick={this.setBoard}
+              className="link-board"
+              href="/"
+              to="/"
+            > Default board
+            </Link>
+          </li>
           {boards}
         </ul>
         <button

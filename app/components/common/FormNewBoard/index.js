@@ -29,8 +29,7 @@ class FormNewBoard extends React.Component {
     if (this.state.valueInput !== '') {
       this.props.close();
       api.post('http://localhost:3000/boards', data)
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
           this.props.getBoard();
         })
         .catch((error) => {
@@ -47,7 +46,7 @@ class FormNewBoard extends React.Component {
     return (
       <form className="form-new-board" onSubmit={this.handleSubmit}>
         <input
-          className="input-new-board"
+          className="input input-new-board"
           placeholder="Enter board name"
           onChange={this.changeInput}
           value={this.state.valueInput}
