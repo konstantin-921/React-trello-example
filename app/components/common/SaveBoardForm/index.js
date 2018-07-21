@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import api from '../../../services/api';
 import './styles.scss';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerTasks }) => ({
+  reducerTasks,
 });
 
 class SaveBoardForm extends React.Component {
@@ -28,7 +28,7 @@ class SaveBoardForm extends React.Component {
       api.post('http://localhost:3000/boards', data)
         .then((response) => {
           const id = Number(response.data);
-          const array = this.props.reducerMain.defaultTasks;
+          const array = this.props.reducerTasks.defaultTasks;
           const data = array.map((elem) => {
             return { ...elem, id };
           });

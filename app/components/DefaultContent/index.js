@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import Task from '../common/Task';
 import FormNewTask from '../common/FormNewTask';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerTasks }) => ({
+  reducerTasks,
 });
 
 class DefaultContent extends React.Component {
@@ -14,7 +14,6 @@ class DefaultContent extends React.Component {
       formIsOpenTodo: false,
       formIsOpenDoing: false,
       formIsOpenDone: false,
-      status: '',
       localId: 0,
     };
   }
@@ -35,7 +34,7 @@ class DefaultContent extends React.Component {
   openNewTaskTodo = () => {
     if (this.state.formIsOpenTodo) {
       return (<FormNewTask
-        status={this.state.status}
+        status="TO_DO"
         id={this.state.localId}
         counter={this.counterId}
         close={this.closeFormNewTaskTodo}
@@ -45,7 +44,7 @@ class DefaultContent extends React.Component {
   openNewTaskDoing = () => {
     if (this.state.formIsOpenDoing) {
       return (<FormNewTask
-        status={this.state.status}
+        status="DOING"
         id={this.state.localId}
         counter={this.counterId}
         close={this.closeFormNewTaskDoing}
@@ -55,7 +54,7 @@ class DefaultContent extends React.Component {
   openNewTaskDone = () => {
     if (this.state.formIsOpenDone) {
       return (<FormNewTask
-        status={this.state.status}
+        status="DONE"
         id={this.state.localId}
         counter={this.counterId}
         close={this.closeFormNewTaskDone}
@@ -71,11 +70,8 @@ class DefaultContent extends React.Component {
   toggleFormDone = () => {
     this.setState({ formIsOpenDone: !this.state.formIsOpenDone });
   }
-  toggleStatus = (event) => {
-    this.setState({ status: event.target.value });
-  }
   renderItemTodo = () => {
-    const array = this.props.reducerMain.defaultTasks.filter((elem) => {
+    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
       return elem.status === 'TO_DO';
     });
     return array.map((elem) => {
@@ -83,7 +79,7 @@ class DefaultContent extends React.Component {
     });
   }
   renderItemDoing = () => {
-    const array = this.props.reducerMain.defaultTasks.filter((elem) => {
+    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
       return elem.status === 'DOING';
     });
     return array.map((elem) => {
@@ -91,7 +87,7 @@ class DefaultContent extends React.Component {
     });
   }
   renderItemDone = () => {
-    const array = this.props.reducerMain.defaultTasks.filter((elem) => {
+    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
       return elem.status === 'DONE';
     });
     return array.map((elem) => {
@@ -110,10 +106,8 @@ class DefaultContent extends React.Component {
         <div className="task-container">
           <h2 className="title-task-container">To do</h2>
           <button
-            value="TO_DO"
             className="add-link"
             onClick={this.toggleFormTodo}
-            onMouseDown={this.toggleStatus}
           > Add task
           </button>
           {formTodo}
@@ -122,10 +116,8 @@ class DefaultContent extends React.Component {
         <div className="task-container">
           <h2 className="title-task-container">Doing</h2>
           <button
-            value="DOING"
             className="add-link"
             onClick={this.toggleFormDoing}
-            onMouseDown={this.toggleStatus}
           >
             Add task
           </button>
@@ -135,10 +127,8 @@ class DefaultContent extends React.Component {
         <div className="task-container">
           <h2 className="title-task-container">Done</h2>
           <button
-            value="DONE"
             className="add-link"
             onClick={this.toggleFormDone}
-            onMouseDown={this.toggleStatus}
           >Add task
           </button>
           {formDone}

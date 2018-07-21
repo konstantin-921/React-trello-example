@@ -1,15 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Link, Switch } from 'react-router-dom';
-import { clearTasks, clearCurrentBoard } from '../../redux/actions/main';
+import { clearTasks } from '../../redux/actions/tasks';
+import { clearCurrentBoard } from '../../redux/actions/boards';
 import DropMenu from '../DropMenu';
 import SaveBoardForm from '../common/SaveBoardForm';
 import MainContent from '../MainContent';
 import DefaultContent from '../DefaultContent';
 import './styles.scss';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
+  reducerTasks,
+  reducerBoards,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,11 +26,15 @@ class MainPage extends React.Component {
       toggleDropdown: false,
       toggleSaveBoardForm: false,
     };
+    this.buttonBoard = React.createRef();
   }
   saveBoard = () => {
-    if (this.props.reducerMain.currentBoard === null) {
+    if (this.props.reducerBoards.currentBoard === null) {
       this.setState({ toggleSaveBoardForm: !this.state.toggleSaveBoardForm });
     }
+  }
+  closeDropMenu = () => {
+    this.setState({ toggleDropdown: false });
   }
   closeSaveBoardForm = () => {
     this.setState({ toggleSaveBoardForm: false });
@@ -42,23 +48,29 @@ class MainPage extends React.Component {
     this.setState({ toggleDropdown: !this.state.toggleDropdown });
   }
   render() {
-    const classSaveButton = (this.props.reducerMain.currentBoard) ?
+    const classSaveButton = (this.props.reducerBoards.currentBoard) ?
       'button button-save-board button-save-board-disable'
       : 'button button-save-board';
     const saveBoardForm = (this.state.toggleSaveBoardForm) ?
       <SaveBoardForm close={this.closeSaveBoardForm} />
       : null;
-    const dropMenu = (this.state.toggleDropdown) ? <DropMenu /> : null;
+    const dropMenu = (this.state.toggleDropdown) ?
+      <DropMenu dataRef={this.buttonBoard} close={this.closeDropMenu} /> : null;
     return (
-      <div className="container">
+      <div
+        className="container"
+      >
         <div className="header">
           <button
             className="button"
+            ref={this.buttonBoard}
             onClick={this.toggleDropdown}
           >
             Boards
           </button>
-          <div className="dropMenu-container">
+          <div
+            className="dropMenu-container"
+          >
             {dropMenu}
           </div>
           <button

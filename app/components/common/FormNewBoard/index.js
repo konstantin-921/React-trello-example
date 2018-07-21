@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getBoard } from '../../../redux/actions/main';
+import { getBoard } from '../../../redux/actions/boards';
 import api from '../../../services/api';
 import './styles.scss';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerBoards }) => ({
+  reducerBoards,
 });
 
 const mapDispatchToProps = dispatch => ({

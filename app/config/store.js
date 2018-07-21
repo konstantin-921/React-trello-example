@@ -3,14 +3,16 @@ import thunk from 'redux-thunk';
 import { createBrowserHistory } from 'history';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import reducerAuth from '../redux/reducers/auth';
-import reducerMain from '../redux/reducers/main';
+import reducerTasks from '../redux/reducers/tasks';
+import reducerBoards from '../redux/reducers/boards';
 
 const history = createBrowserHistory();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducer = combineReducers({
   reducerAuth,
-  reducerMain,
+  reducerTasks,
+  reducerBoards,
 });
 
 export default createStore(

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setCurrentBoard, getBoard } from '../../../redux/actions/main';
+import { setCurrentBoard, getBoard } from '../../../redux/actions/boards';
 import api from '../../../services/api';
 import './styles.scss';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerBoards }) => ({
+  reducerBoards,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -15,6 +15,12 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class BoardLink extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirect: false,
+    };
+  }
   setBoard = () => {
     const { id } = this.props.elem;
     this.props.setCurrentBoard(id);
@@ -27,6 +33,9 @@ class BoardLink extends React.Component {
     api.delete('http://localhost:3000/boards', data)
       .then(() => {
         this.props.getBoard();
+        if (this.props.elem.id === this.props.reducerBoards.currentBoard) {
+          this.setState({ redirect: true });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -34,6 +43,7 @@ class BoardLink extends React.Component {
   }
   render() {
     const { caption, id } = this.props.elem;
+    const redirectToDefault = (this.state.redirect) ? <Redirect to="/" /> : null;
     return (
       <li className="link-board-container">
         <Link
@@ -46,8 +56,9 @@ class BoardLink extends React.Component {
         <button
           className="button-delete-board"
           onClick={this.deleteBoard}
-        >x
+        >X
         </button>
+        {redirectToDefault}
       </li>
     );
   }

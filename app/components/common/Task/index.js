@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getTasks, removeDefaultTask } from '../../../redux/actions/main';
+import { getTasks, removeDefaultTask } from '../../../redux/actions/tasks';
 import api from '../../../services/api';
 import './style.scss';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
+  reducerTasks,
+  reducerBoards,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -15,14 +16,14 @@ const mapDispatchToProps = dispatch => ({
 
 class Task extends React.Component {
   deleteTask = () => {
-    if (this.props.reducerMain.currentBoard !== null) {
+    if (this.props.reducerBoards.currentBoard !== null) {
       const { id } = this.props.elem;
       const userData = {
         id,
       };
       api.delete('http://localhost:3000/tasks', userData)
         .then(() => {
-          this.props.getTasks(this.props.reducerMain.currentBoard);
+          this.props.getTasks(this.props.reducerBoards.currentBoard);
         })
         .catch((error) => {
           console.log(error);
@@ -32,7 +33,7 @@ class Task extends React.Component {
     }
   }
   deleteDefaultTask = () => {
-    const array = this.props.reducerMain.defaultTasks.filter((elem) => {
+    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
       return elem.id !== this.props.elem.id;
     });
     this.props.removeDefaultTask(array);

@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getTasks, addDefaultTask } from '../../../redux/actions/main';
+import { getTasks, addDefaultTask } from '../../../redux/actions/tasks';
 import api from '../../../services/api';
 import './styles.scss';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
+  reducerTasks,
+  reducerBoards,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -29,19 +30,19 @@ class FormNewTask extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    if (this.props.reducerMain.currentBoard !== null) {
+    if (this.props.reducerBoards.currentBoard !== null) {
       const data = {
         content: this.state.contentValue,
         title: this.state.titleValue,
         status: this.props.status,
         position: '1',
-        boards_id: Number(this.props.reducerMain.currentBoard),
+        boards_id: Number(this.props.reducerBoards.currentBoard),
       };
       if (this.state.contentValue !== '' && this.state.contentValue && this.state.titleValue !== '' && this.state.titleValue) {
         api.post('http://localhost:3000/tasks', data)
           .then(() => {
             this.props.close();
-            this.props.getTasks(this.props.reducerMain.currentBoard);
+            this.props.getTasks(this.props.reducerBoards.currentBoard);
           })
           .catch((error) => {
             console.log(error);

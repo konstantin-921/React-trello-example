@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getBoard, setCurrentBoard } from '../../redux/actions/main';
+import { getBoard, setCurrentBoard } from '../../redux/actions/boards';
 import FormNewBoard from '../common/FormNewBoard';
 import BoardLink from '../common/BoardLink';
 import './styles.scss';
 
-const mapStateToProps = ({ reducerMain }) => ({
-  reducerMain,
+const mapStateToProps = ({ reducerBoards }) => ({
+  reducerBoards,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,10 +24,24 @@ class DropMenu extends React.Component {
   }
   componentDidMount() {
     this.props.getBoard();
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+  setWrapperRef = (node) => {
+    this.wrapperRef = node;
   }
   setBoard = () => {
     const id = null;
     this.props.setCurrentBoard(id);
+  }
+  handleClickOutside = (event) => {
+    const dataRef = this.props.dataRef.current;
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)
+      && !dataRef.contains(event.target)) {
+      this.props.close();
+    }
   }
   toggleNewBoard = () => {
     this.setState({ toggleNewBoard: !this.state.toggleNewBoard });
@@ -36,7 +50,7 @@ class DropMenu extends React.Component {
     this.setState({ toggleNewBoard: false });
   }
   renderBoardsLink = () => {
-    return this.props.reducerMain.boards.map((elem) => {
+    return this.props.reducerBoards.boards.map((elem) => {
       return <BoardLink key={elem.id} elem={elem} />;
     });
   }
@@ -44,7 +58,11 @@ class DropMenu extends React.Component {
     const boards = this.renderBoardsLink();
     const form = (this.state.toggleNewBoard) ? <FormNewBoard close={this.closeNewBoard} /> : null;
     return (
-      <div className="dropMenu">
+      <div
+        ref={this.setWrapperRef}
+        id="dropMenu"
+        className="dropMenu"
+      >
         <ul>
           <li>
             <Link
