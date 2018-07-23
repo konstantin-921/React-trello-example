@@ -1,4 +1,5 @@
 import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 import { getTasks, removeDefaultTask } from '../../../redux/actions/tasks';
 import api from '../../../services/api';
@@ -40,16 +41,26 @@ class Task extends React.Component {
   }
   render() {
     const { content, title } = this.props.elem;
+    const { elem, index } = this.props;
     return (
-      <div className="task">
-        <div className="title-task">{title}</div>
-        <button
-          className="button button-delete-task"
-          onClick={this.deleteTask}
-        >X
-        </button>
-        <div>{content}</div>
-      </div>
+      <Draggable key={elem.id} draggableId={elem.id} index={index}>
+        {provided => (
+          <div
+            className="task"
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <div className="title-task">{title}</div>
+            <button
+              className="button button-delete-task"
+              onClick={this.deleteTask}
+            >X
+            </button>
+            <div>{content}</div>
+          </div>
+        )}
+      </Draggable>
     );
   }
 }

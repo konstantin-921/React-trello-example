@@ -29,6 +29,27 @@ export const clearTasks = () => {
   };
 };
 
+export const reorderTasksTodo = (data) => {
+  return {
+    type: 'REORDER_TASKS_TODO',
+    data,
+  };
+};
+
+export const reorderTasksDoing = (data) => {
+  return {
+    type: 'REORDER_TASKS_DOING',
+    data,
+  };
+};
+
+export const reorderTasksDone = (data) => {
+  return {
+    type: 'REORDER_TASKS_DONE',
+    data,
+  };
+};
+
 export function getTasks(id) {
   const userData = {
     id,
