@@ -2,16 +2,65 @@ import api from '../../services/api';
 
 const localhost = 'http://localhost:3000';
 
-export const addDefaultTask = (data) => {
+export const addDefaultTaskTodo = (data) => {
   return {
-    type: 'ADD_DEFAULT_TASK',
+    type: 'ADD_DEFAULT_TASK_TODO',
     data,
   };
 };
 
-export const removeDefaultTask = (data) => {
+export const addDefaultTaskDoing = (data) => {
   return {
-    type: 'REMOVE_DEFAULT_TASK',
+    type: 'ADD_DEFAULT_TASK_DOING',
+    data,
+  };
+};
+
+export const addDefaultTaskDone = (data) => {
+  return {
+    type: 'ADD_DEFAULT_TASK_DONE',
+    data,
+  };
+};
+
+export const reorderDefaultTaskTodo = (data) => {
+  return {
+    type: 'REORDER_DEFAULT_TASK_TODO',
+    data,
+  };
+};
+
+export const reorderDefaultTaskDoing = (data) => {
+  return {
+    type: 'REORDER_DEFAULT_TASK_DOING',
+    data,
+  };
+};
+
+export const reorderDefaultTaskDone = (data) => {
+  return {
+    type: 'REORDER_DEFAULT_TASK_DONE',
+    data,
+  };
+};
+
+export const removeDefaultTaskTodo = (data) => {
+  return {
+    type: 'REMOVE_DEFAULT_TASK_TODO',
+    data,
+  };
+};
+
+export const removeDefaultTaskDoing = (data) => {
+  return {
+    type: 'REMOVE_DEFAULT_TASK_DOING',
+    data,
+  };
+};
+
+export const removeDefaultTaskDone = (data) => {
+  return {
+    type: 'REMOVE_DEFAULT_TASK_DONE',
     data,
   };
 };
@@ -19,7 +68,7 @@ export const removeDefaultTask = (data) => {
 export const receiveTasks = (data) => {
   return {
     type: 'RECEIVE_TASKS',
-    data,
+    data: data.sort((a, b) => { return a.position - b.position; }),
   };
 };
 
@@ -66,3 +115,4 @@ export function getTasks(id) {
       });
   };
 }
+

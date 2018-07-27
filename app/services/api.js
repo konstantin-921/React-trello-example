@@ -36,14 +36,15 @@ function Api() {
     });
   };
 
-  this.put = (url) => {
-    return axios.put({
+  this.put = (url, data) => {
+    return axios({
       method: 'put',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `bearer ${localStorage.getItem('token.id') || null}`,
       },
       url,
+      data: JSON.stringify(data),
     });
   };
 }

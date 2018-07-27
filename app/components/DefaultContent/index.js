@@ -1,10 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { reorderDefaultTaskTodo, reorderDefaultTaskDoing, reorderDefaultTaskDone } from '../../redux/actions/tasks';
+import { reorder, move } from '../../services/helpers/helperDnd';
 import Task from '../common/Task';
 import FormNewTask from '../common/FormNewTask';
 
+
 const mapStateToProps = ({ reducerTasks }) => ({
   reducerTasks,
+});
+
+const mapDispatchToProps = dispatch => ({
+  reorderDefaultTaskTodo: data => dispatch(reorderDefaultTaskTodo(data)),
+  reorderDefaultTaskDoing: data => dispatch(reorderDefaultTaskDoing(data)),
+  reorderDefaultTaskDone: data => dispatch(reorderDefaultTaskDone(data)),
 });
 
 class DefaultContent extends React.Component {
@@ -16,6 +26,51 @@ class DefaultContent extends React.Component {
       formIsOpenDone: false,
       localId: 0,
     };
+  }
+  // DnD function
+  onDragEnd = (result) => {
+    this.idList = {
+      droppable: this.props.reducerTasks.defaultTaskTodo,
+      droppable2: this.props.reducerTasks.defaultTaskDoing,
+      droppable3: this.props.reducerTasks.defaultTaskDone,
+    };
+    this.getListTasks = id => this.idList[id];
+    const { source, destination } = result;
+    if (!destination) {
+      return;
+    }
+    if (source.droppableId === destination.droppableId) {
+      const items = reorder(
+        this.getListTasks(source.droppableId),
+        source.index,
+        destination.index,
+      );
+      if (source.droppableId === 'droppable') {
+        this.props.reorderDefaultTaskTodo(items);
+      }
+      if (source.droppableId === 'droppable2') {
+        this.props.reorderDefaultTaskDoing(items);
+      }
+      if (source.droppableId === 'droppable3') {
+        this.props.reorderDefaultTaskDone(items);
+      }
+    } else {
+      const result = move(
+        this.getListTasks(source.droppableId),
+        this.getListTasks(destination.droppableId),
+        source,
+        destination,
+      );
+      if (result.droppable) {
+        this.props.reorderDefaultTaskTodo(result.droppable);
+      }
+      if (result.droppable2) {
+        this.props.reorderDefaultTaskDoing(result.droppable2);
+      }
+      if (result.droppable3) {
+        this.props.reorderDefaultTaskDone(result.droppable3);
+      }
+    }
   }
   counterId = () => {
     this.setState(prevState => ({
@@ -71,27 +126,18 @@ class DefaultContent extends React.Component {
     this.setState({ formIsOpenDone: !this.state.formIsOpenDone });
   }
   renderItemTodo = () => {
-    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
-      return elem.status === 'TO_DO';
-    });
-    return array.map((elem) => {
-      return <Task key={elem.id} elem={elem} />;
+    return this.props.reducerTasks.defaultTaskTodo.map((elem, index) => {
+      return <Task key={elem.id} elem={elem} index={index} />;
     });
   }
   renderItemDoing = () => {
-    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
-      return elem.status === 'DOING';
-    });
-    return array.map((elem) => {
-      return <Task key={elem.id} elem={elem} />;
+    return this.props.reducerTasks.defaultTaskDoing.map((elem, index) => {
+      return <Task key={elem.id} elem={elem} index={index} />;
     });
   }
   renderItemDone = () => {
-    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
-      return elem.status === 'DONE';
-    });
-    return array.map((elem) => {
-      return <Task key={elem.id} elem={elem} />;
+    return this.props.reducerTasks.defaultTaskDone.map((elem, index) => {
+      return <Task key={elem.id} elem={elem} index={index} />;
     });
   }
   render() {
@@ -103,40 +149,66 @@ class DefaultContent extends React.Component {
     const formDone = this.openNewTaskDone();
     return (
       <div className="main">
-        <div className="task-container">
-          <h2 className="title-task-container">To do</h2>
-          <button
-            className="add-link"
-            onClick={this.toggleFormTodo}
-          > Add task
-          </button>
-          {formTodo}
-          {contentTodo}
-        </div>
-        <div className="task-container">
-          <h2 className="title-task-container">Doing</h2>
-          <button
-            className="add-link"
-            onClick={this.toggleFormDoing}
-          >
-            Add task
-          </button>
-          {formDoing}
-          {contentDoing}
-        </div>
-        <div className="task-container">
-          <h2 className="title-task-container">Done</h2>
-          <button
-            className="add-link"
-            onClick={this.toggleFormDone}
-          >Add task
-          </button>
-          {formDone}
-          {contentDone}
-        </div>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable droppableId="droppable">
+            {provided => (
+              <div
+                className="task-container"
+                ref={provided.innerRef}
+              >
+                <h2 className="title-task-container">To do</h2>
+                <button
+                  className="add-link"
+                  onClick={this.toggleFormTodo}
+                > Add task
+                </button>
+                {formTodo}
+                {contentTodo}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <Droppable droppableId="droppable2">
+            {provided => (
+              <div
+                className="task-container"
+                ref={provided.innerRef}
+              >
+                <h2 className="title-task-container">Doing</h2>
+                <button
+                  className="add-link"
+                  onClick={this.toggleFormDoing}
+                >
+                  Add task
+                </button>
+                {formDoing}
+                {contentDoing}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <Droppable droppableId="droppable3">
+            {provided => (
+              <div
+                className="task-container"
+                ref={provided.innerRef}
+              >
+                <h2 className="title-task-container">Done</h2>
+                <button
+                  className="add-link"
+                  onClick={this.toggleFormDone}
+                >Add task
+                </button>
+                {formDone}
+                {contentDone}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(DefaultContent);
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultContent);

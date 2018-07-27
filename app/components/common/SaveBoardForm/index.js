@@ -27,10 +27,13 @@ class SaveBoardForm extends React.Component {
       this.props.close();
       api.post('http://localhost:3000/boards', data)
         .then((response) => {
-          const id = Number(response.data);
-          const array = this.props.reducerTasks.defaultTasks;
+          const boardsId = Number(response.data);
+          const todo = this.props.reducerTasks.defaultTaskTodo;
+          const doing = this.props.reducerTasks.defaultTaskDoing;
+          const done = this.props.reducerTasks.defaultTaskDone;
+          const array = [...todo, ...doing, ...done];
           const data = array.map((elem) => {
-            return { ...elem, id };
+            return { ...elem, boardsId };
           });
           api.post('http://localhost:3000/tasks', data)
             .catch((error) => {

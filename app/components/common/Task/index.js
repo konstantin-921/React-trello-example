@@ -1,7 +1,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
-import { getTasks, removeDefaultTask } from '../../../redux/actions/tasks';
+import { getTasks, removeDefaultTaskTodo, removeDefaultTaskDoing, removeDefaultTaskDone } from '../../../redux/actions/tasks';
 import api from '../../../services/api';
 import './style.scss';
 
@@ -12,32 +12,53 @@ const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
 
 const mapDispatchToProps = dispatch => ({
   getTasks: id => dispatch(getTasks(id)),
-  removeDefaultTask: data => dispatch(removeDefaultTask(data)),
+  removeDefaultTaskTodo: data => dispatch(removeDefaultTaskTodo(data)),
+  removeDefaultTaskDoing: data => dispatch(removeDefaultTaskDoing(data)),
+  removeDefaultTaskDone: data => dispatch(removeDefaultTaskDone(data)),
 });
 
 class Task extends React.Component {
   deleteTask = () => {
     if (this.props.reducerBoards.currentBoard !== null) {
-      const { id } = this.props.elem;
-      const userData = {
-        id,
-      };
-      api.delete('http://localhost:3000/tasks', userData)
-        .then(() => {
-          this.props.getTasks(this.props.reducerBoards.currentBoard);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.deleteSavedTask();
     } else {
       this.deleteDefaultTask();
     }
   }
+  deleteSavedTask = () => {
+    api.delete('http://localhost:3000/tasks', this.props.elem)
+      .then(() => {
+        this.props.getTasks(this.props.reducerBoards.currentBoard);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   deleteDefaultTask = () => {
-    const array = this.props.reducerTasks.defaultTasks.filter((elem) => {
-      return elem.id !== this.props.elem.id;
+    if (this.props.elem.status === 'TO_DO') {
+      const array = this.props.reducerTasks.defaultTaskTodo.filter((elem) => {
+        return elem.id !== this.props.elem.id;
+      });
+      this.sortByIndex(array);
+      this.props.removeDefaultTaskTodo(array);
+    } else if (this.props.elem.status === 'DOING') {
+      const array = this.props.reducerTasks.defaultTaskDoing.filter((elem) => {
+        return elem.id !== this.props.elem.id;
+      });
+      this.sortByIndex(array);
+      this.props.removeDefaultTaskDoing(array);
+    } else if (this.props.elem.status === 'DONE') {
+      const array = this.props.reducerTasks.defaultTaskDone.filter((elem) => {
+        return elem.id !== this.props.elem.id;
+      });
+      this.sortByIndex(array);
+      this.props.removeDefaultTaskDone(array);
+    }
+  }
+  sortByIndex = (arr) => {
+    arr.forEach((elem, index) => {
+      elem.position = index; // eslint-disable-line no-param-reassign
     });
-    this.props.removeDefaultTask(array);
   }
   render() {
     const { content, title } = this.props.elem;

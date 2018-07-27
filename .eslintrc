@@ -33,6 +33,10 @@
     "no-console": "off",
     "no-underscore-dangle": 0,
     "no-plusplus": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "no-return-assign": [
+      2,
+      "except-parens"
+    ]
   }
 }

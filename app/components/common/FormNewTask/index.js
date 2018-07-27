@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getTasks, addDefaultTask } from '../../../redux/actions/tasks';
+import { getTasks, addDefaultTaskTodo, addDefaultTaskDoing, addDefaultTaskDone } from '../../../redux/actions/tasks';
 import api from '../../../services/api';
 import './styles.scss';
 
@@ -11,7 +11,9 @@ const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
 
 const mapDispatchToProps = dispatch => ({
   getTasks: id => dispatch(getTasks(id)),
-  addDefaultTask: data => dispatch(addDefaultTask(data)),
+  addDefaultTaskTodo: data => dispatch(addDefaultTaskTodo(data)),
+  addDefaultTaskDoing: data => dispatch(addDefaultTaskDoing(data)),
+  addDefaultTaskDone: data => dispatch(addDefaultTaskDone(data)),
 });
 
 class FormNewTask extends React.Component {
@@ -31,11 +33,16 @@ class FormNewTask extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.props.reducerBoards.currentBoard !== null) {
+      const status = {
+        TO_DO: this.props.reducerTasks.tasksTodo.length,
+        DOING: this.props.reducerTasks.tasksDoing.length,
+        DONE: this.props.reducerTasks.tasksDone.length,
+      };
       const data = {
         content: this.state.contentValue,
         title: this.state.titleValue,
         status: this.props.status,
-        position: '1',
+        position: status[this.props.status],
         boards_id: Number(this.props.reducerBoards.currentBoard),
       };
       if (this.state.contentValue !== '' && this.state.contentValue && this.state.titleValue !== '' && this.state.titleValue) {
@@ -53,15 +60,26 @@ class FormNewTask extends React.Component {
     } else this.pushToDefaultTask();
   }
   pushToDefaultTask = () => {
+    const status = {
+      TO_DO: this.props.reducerTasks.defaultTaskTodo.length,
+      DOING: this.props.reducerTasks.defaultTaskDoing.length,
+      DONE: this.props.reducerTasks.defaultTaskDone.length,
+    };
     const data = {
       content: this.state.contentValue,
       title: this.state.titleValue,
       status: this.props.status,
-      position: '1',
+      position: status[this.props.status],
       id: this.props.id,
     };
     if (this.state.contentValue !== '' && this.state.contentValue && this.state.titleValue !== '' && this.state.titleValue) {
-      this.props.addDefaultTask(data);
+      if (data.status === 'TO_DO') {
+        this.props.addDefaultTaskTodo(data);
+      } else if (data.status === 'DOING') {
+        this.props.addDefaultTaskDoing(data);
+      } else if (data.status === 'DONE') {
+        this.props.addDefaultTaskDone(data);
+      }
       this.props.counter();
       this.props.close();
     } else {

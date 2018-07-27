@@ -1,10 +1,11 @@
 const initial = {
   boards: [],
-  tasks: [],
   tasksTodo: [],
   tasksDoing: [],
   tasksDone: [],
-  defaultTasks: [],
+  defaultTaskTodo: [],
+  defaultTaskDoing: [],
+  defaultTaskDone: [],
   currentBoard: null,
 };
 
@@ -14,20 +15,54 @@ const reducerTasks = (state = initial, action) => {
     case 'RECEIVE_TASKS':
       return {
         ...state,
-        tasks: data,
         tasksTodo: data.filter(elem => elem.status === 'TO_DO'),
         tasksDoing: data.filter(elem => elem.status === 'DOING'),
         tasksDone: data.filter(elem => elem.status === 'DONE'),
       };
-    case 'ADD_DEFAULT_TASK':
+    case 'ADD_DEFAULT_TASK_TODO':
       return {
         ...state,
-        defaultTasks: [...state.defaultTasks, data],
+        defaultTaskTodo: [...state.defaultTaskTodo, data],
       };
-    case 'REMOVE_DEFAULT_TASK':
+    case 'ADD_DEFAULT_TASK_DOING':
       return {
         ...state,
-        defaultTasks: data,
+        defaultTaskDoing: [...state.defaultTaskDoing, data],
+      };
+    case 'ADD_DEFAULT_TASK_DONE':
+      return {
+        ...state,
+        defaultTaskDone: [...state.defaultTaskDone, data],
+      };
+    case 'REORDER_DEFAULT_TASK_TODO':
+      return {
+        ...state,
+        defaultTaskTodo: data,
+      };
+    case 'REORDER_DEFAULT_TASK_DOING':
+      return {
+        ...state,
+        defaultTaskDoing: data,
+      };
+    case 'REORDER_DEFAULT_TASK_DONE':
+      return {
+        ...state,
+        defaultTaskDone: data,
+      };
+    case 'REMOVE_DEFAULT_TASK_TODO':
+      return {
+        ...state,
+        defaultTaskTodo: data,
+      };
+    case 'REMOVE_DEFAULT_TASK_DOING':
+      return {
+        ...state,
+        defaultTaskDoing: data,
+      };
+    case 'REMOVE_DEFAULT_TASK_DONE':
+      return {
+        ...state,
+        defaultTaskDone: data,
       };
     case 'REORDER_TASKS_TODO':
       return {
@@ -47,7 +82,6 @@ const reducerTasks = (state = initial, action) => {
     case 'CLEAR_TASKS':
       return {
         ...state,
-        tasks: [],
         defaultTasks: [],
       };
     default:

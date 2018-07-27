@@ -5,7 +5,7 @@ import Task from '../common/Task';
 import FormNewTask from '../common/FormNewTask';
 import { setCurrentBoard } from '../../redux/actions/boards';
 import { getTasks, reorderTasksTodo, reorderTasksDoing, reorderTasksDone } from '../../redux/actions/tasks';
-import { reorder, move } from '../../services/helpers/reorder';
+import { reorder, move } from '../../services/helpers/helperDnd';
 
 const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
   reducerTasks,
@@ -60,6 +60,7 @@ class MainContent extends React.Component {
         this.getListTasks(source.droppableId),
         source.index,
         destination.index,
+        true,
       );
       if (source.droppableId === 'droppable') {
         this.props.reorderTasksTodo(items);
@@ -76,6 +77,7 @@ class MainContent extends React.Component {
         this.getListTasks(destination.droppableId),
         source,
         destination,
+        true,
       );
       if (result.droppable) {
         this.props.reorderTasksTodo(result.droppable);
