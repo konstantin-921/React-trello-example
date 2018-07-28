@@ -21,6 +21,7 @@ class SaveBoardForm extends React.Component {
     event.preventDefault();
     const data = {
       caption: this.state.valueInput,
+      share: false,
       id: Number(localStorage['user.id']),
     };
     if (this.state.valueInput !== '') {

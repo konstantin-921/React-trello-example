@@ -10,7 +10,7 @@ const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTasks: id => dispatch(getTasks(id)),
+  getTasks: (id, user) => dispatch(getTasks(id, user)),
   addDefaultTaskTodo: data => dispatch(addDefaultTaskTodo(data)),
   addDefaultTaskDoing: data => dispatch(addDefaultTaskDoing(data)),
   addDefaultTaskDone: data => dispatch(addDefaultTaskDone(data)),
@@ -46,10 +46,11 @@ class FormNewTask extends React.Component {
         boards_id: Number(this.props.reducerBoards.currentBoard),
       };
       if (this.state.contentValue !== '' && this.state.contentValue && this.state.titleValue !== '' && this.state.titleValue) {
+        const user = localStorage.getItem('user.id');
         api.post('http://localhost:3000/tasks', data)
           .then(() => {
             this.props.close();
-            this.props.getTasks(this.props.reducerBoards.currentBoard);
+            this.props.getTasks(this.props.reducerBoards.currentBoard, user);
           })
           .catch((error) => {
             console.log(error);

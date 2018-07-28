@@ -11,7 +11,7 @@ const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTasks: id => dispatch(getTasks(id)),
+  getTasks: (id, user) => dispatch(getTasks(id, user)),
   removeDefaultTaskTodo: data => dispatch(removeDefaultTaskTodo(data)),
   removeDefaultTaskDoing: data => dispatch(removeDefaultTaskDoing(data)),
   removeDefaultTaskDone: data => dispatch(removeDefaultTaskDone(data)),
@@ -26,9 +26,10 @@ class Task extends React.Component {
     }
   }
   deleteSavedTask = () => {
+    const user = localStorage.getItem('user.id');
     api.delete('http://localhost:3000/tasks', this.props.elem)
       .then(() => {
-        this.props.getTasks(this.props.reducerBoards.currentBoard);
+        this.props.getTasks(this.props.reducerBoards.currentBoard, user);
       })
       .catch((error) => {
         console.log(error);

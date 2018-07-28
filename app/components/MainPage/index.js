@@ -7,6 +7,7 @@ import DropMenu from '../DropMenu';
 import SaveBoardForm from '../common/SaveBoardForm';
 import MainContent from '../MainContent';
 import DefaultContent from '../DefaultContent';
+import api from '../../services/api';
 import './styles.scss';
 
 const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
@@ -25,8 +26,25 @@ class MainPage extends React.Component {
     this.state = {
       toggleDropdown: false,
       toggleSaveBoardForm: false,
+      shareLink: '',
     };
     this.buttonBoard = React.createRef();
+  }
+  shareBoard = () => {
+    if (this.props.reducerBoards.currentBoard !== null) {
+      const data = {
+        boardId: this.props.reducerBoards.currentBoard,
+      };
+      api.put('http://localhost:3000/boards', data)
+        .then((response) => {
+          console.log(response.data);
+          const link = this.props.history.location.pathname;
+          this.setState({ shareLink: `http://localhost:8080${link}` });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
   saveBoard = () => {
     if (this.props.reducerBoards.currentBoard === null) {
@@ -79,10 +97,16 @@ class MainPage extends React.Component {
           >Save board
           </button>
           {saveBoardForm}
-          <button className="button button-share">
+          <button
+            className="button button-share"
+            onClick={this.shareBoard}
+          >
             Share
           </button>
-          <input className="input share-input" />
+          <input
+            className="input share-input"
+            value={this.state.shareLink}
+          />
           <Link
             href="/login"
             to="/login"

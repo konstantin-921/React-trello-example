@@ -99,9 +99,11 @@ export const reorderTasksDone = (data) => {
   };
 };
 
-export function getTasks(id) {
+export function getTasks(id, userId, flag) {
   const userData = {
     id,
+    userId,
+    flag,
   };
   const url = new URL(`${localhost}/tasks`);
   url.search = new URLSearchParams(userData);

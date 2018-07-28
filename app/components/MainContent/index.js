@@ -13,7 +13,7 @@ const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTasks: id => dispatch(getTasks(id)),
+  getTasks: (id, user) => dispatch(getTasks(id, user)),
   setCurrentBoard: data => dispatch(setCurrentBoard(data)),
   reorderTasksTodo: data => dispatch(reorderTasksTodo(data)),
   reorderTasksDoing: data => dispatch(reorderTasksDoing(data)),
@@ -30,16 +30,18 @@ class MainContent extends React.Component {
     };
   }
   componentDidMount() {
+    const user = localStorage.getItem('user.id');
     if (this.props.match.params.caption) {
-      this.props.getTasks(this.props.match.params.caption);
+      this.props.getTasks(this.props.match.params.caption, user);
       this.props.setCurrentBoard(this.props.match.params.caption);
     }
   }
   componentWillReceiveProps(nextProps) {
+    const user = localStorage.getItem('user.id');
     if (nextProps.match.params.caption
       && this.props.match.params.caption
       !== nextProps.match.params.caption) {
-      this.props.getTasks(nextProps.match.params.caption);
+      this.props.getTasks(nextProps.match.params.caption, user);
     }
   }
 
