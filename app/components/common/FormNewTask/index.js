@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { reducerTasksAllType } from '../../../config/propTypes';
 import { getTasks, addDefaultTaskTodo, addDefaultTaskDoing, addDefaultTaskDone } from '../../../redux/actions/tasks';
 import api from '../../../services/api';
 import './styles.scss';
@@ -39,13 +41,13 @@ class FormNewTask extends React.Component {
         DONE: this.props.reducerTasks.tasksDone.length,
       };
       const data = {
-        content: this.state.contentValue,
-        title: this.state.titleValue,
+        content: this.state.contentValue.trim(),
+        title: this.state.titleValue.trim(),
         status: this.props.status,
         position: status[this.props.status],
-        boards_id: Number(this.props.reducerBoards.currentBoard),
+        boards_id: this.props.reducerBoards.currentBoard,
       };
-      if (this.state.contentValue !== '' && this.state.contentValue && this.state.titleValue !== '' && this.state.titleValue) {
+      if (data.content !== '' && data.title !== '') {
         const user = localStorage.getItem('user.id');
         api.post('http://localhost:3000/tasks', data)
           .then(() => {
@@ -109,5 +111,22 @@ class FormNewTask extends React.Component {
     );
   }
 }
+
+FormNewTask.defaultProps = {
+  counter: () => { },
+  id: 0,
+};
+
+FormNewTask.propTypes = {
+  id: PropTypes.number,
+  status: PropTypes.string.isRequired,
+  counter: PropTypes.func,
+  close: PropTypes.func.isRequired,
+  getTasks: PropTypes.func.isRequired,
+  addDefaultTaskTodo: PropTypes.func.isRequired,
+  addDefaultTaskDoing: PropTypes.func.isRequired,
+  addDefaultTaskDone: PropTypes.func.isRequired,
+  reducerTasks: reducerTasksAllType.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormNewTask);

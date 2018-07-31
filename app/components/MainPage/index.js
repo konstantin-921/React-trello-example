@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Route, Link, Switch } from 'react-router-dom';
 import { clearTasks } from '../../redux/actions/tasks';
 import { clearCurrentBoard } from '../../redux/actions/boards';
 import DropMenu from '../DropMenu';
-import SaveBoardForm from '../common/SaveBoardForm';
+import FormSaveBoard from '../common/FormSaveBoard';
 import MainContent from '../MainContent';
 import DefaultContent from '../DefaultContent';
 import api from '../../services/api';
@@ -25,7 +26,7 @@ class MainPage extends React.Component {
     super(props);
     this.state = {
       toggleDropdown: false,
-      toggleSaveBoardForm: false,
+      toggleFormSaveBoard: false,
       shareLink: '',
     };
     this.buttonBoard = React.createRef();
@@ -48,14 +49,14 @@ class MainPage extends React.Component {
   }
   saveBoard = () => {
     if (this.props.reducerBoards.currentBoard === null) {
-      this.setState({ toggleSaveBoardForm: !this.state.toggleSaveBoardForm });
+      this.setState({ toggleFormSaveBoard: !this.state.toggleFormSaveBoard });
     }
   }
   closeDropMenu = () => {
     this.setState({ toggleDropdown: false });
   }
   closeSaveBoardForm = () => {
-    this.setState({ toggleSaveBoardForm: false });
+    this.setState({ toggleFormSaveBoard: false });
   }
   logout = () => {
     localStorage.clear();
@@ -69,8 +70,8 @@ class MainPage extends React.Component {
     const classSaveButton = (this.props.reducerBoards.currentBoard) ?
       'button button-save-board button-save-board-disable'
       : 'button button-save-board';
-    const saveBoardForm = (this.state.toggleSaveBoardForm) ?
-      <SaveBoardForm close={this.closeSaveBoardForm} />
+    const saveBoardForm = (this.state.toggleFormSaveBoard) ?
+      <FormSaveBoard close={this.closeSaveBoardForm} />
       : null;
     const dropMenu = (this.state.toggleDropdown) ?
       <DropMenu dataRef={this.buttonBoard} close={this.closeDropMenu} /> : null;
@@ -127,5 +128,10 @@ class MainPage extends React.Component {
     );
   }
 }
+
+MainPage.propTypes = {
+  clearTasks: PropTypes.func.isRequired,
+  clearCurrentBoard: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

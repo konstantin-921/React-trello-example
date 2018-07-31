@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { reducerDefaultTaskType } from '../../../config/propTypes';
 import api from '../../../services/api';
 import './styles.scss';
 
@@ -7,7 +9,7 @@ const mapStateToProps = ({ reducerTasks }) => ({
   reducerTasks,
 });
 
-class SaveBoardForm extends React.Component {
+class FormSaveBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,11 +22,11 @@ class SaveBoardForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      caption: this.state.valueInput,
+      caption: this.state.valueInput.trim(),
       share: false,
       id: Number(localStorage['user.id']),
     };
-    if (this.state.valueInput !== '') {
+    if (data.caption !== '') {
       this.props.close();
       api.post('http://localhost:3000/boards', data)
         .then((response) => {
@@ -66,4 +68,9 @@ class SaveBoardForm extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(SaveBoardForm);
+FormSaveBoard.propTypes = {
+  close: PropTypes.func.isRequired,
+  reducerTasks: reducerDefaultTaskType.isRequired,
+};
+
+export default connect(mapStateToProps)(FormSaveBoard);

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { registration } from '../../../redux/actions/auth';
+import { registration, addUserMessageAuth } from '../../../redux/actions/auth';
+import UserMessage from '../../common/UserMessage';
 import '../styles.scss';
 
 const mapStateToProps = ({ reducerAuth }) => ({
@@ -11,6 +13,7 @@ const mapStateToProps = ({ reducerAuth }) => ({
 const mapDispatchToProps = dispatch => ({
   registration: (username, userpass, useremail) =>
     dispatch(registration(username, userpass, useremail)),
+  addUserMessageAuth: data => dispatch(addUserMessageAuth(data)),
 });
 
 class FormRegistration extends React.Component {
@@ -20,7 +23,13 @@ class FormRegistration extends React.Component {
       login: '',
       password: '',
       email: '',
+      userMessage: '',
     };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reducerAuth.userMessage !== this.props.reducerAuth.userMessage) {
+      this.setState({ userMessage: nextProps.reducerAuth.userMessage });
+    }
   }
   handleLogin = (event) => {
     this.setState({ login: event.target.value });
@@ -33,17 +42,20 @@ class FormRegistration extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    if (this.state.login !== '' && this.state.password !== '' && this.state.email !== '') {
-      const username = this.state.login;
-      const userpass = this.state.password;
-      const useremail = this.state.email;
+    const username = this.state.login.trim();
+    const userpass = this.state.password.trim();
+    const useremail = this.state.email.trim();
+    if (username !== '' && userpass !== '' && useremail !== '') {
       this.props.registration(username, userpass, useremail);
     } else {
       const data = 'All fields must be filled in';
-      console.log(data);
+      this.props.addUserMessageAuth(data);
     }
   }
   render() {
+    const stateMessage = this.state.userMessage;
+    const flag = this.state.userMessage !== 'Successful registration!';
+    const message = stateMessage ? <UserMessage data={stateMessage} source="AUTH_FORM" flag={flag} /> : null;
     return (
       <React.Fragment>
         <form onSubmit={this.handleSubmit} className="auth registration">
@@ -70,6 +82,7 @@ class FormRegistration extends React.Component {
               value={this.state.email}
               onChange={this.handleEmail}
             />
+            {message}
           </fieldset>
           <fieldset className="actions">
             <input type="submit" className="submit" value="REGISTRATION" />
@@ -86,5 +99,9 @@ class FormRegistration extends React.Component {
     );
   }
 }
+
+FormRegistration.propTypes = {
+  registration: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormRegistration);

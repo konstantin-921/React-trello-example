@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
-import { logining } from '../../../redux/actions/auth';
+import UserMessage from '../../common/UserMessage';
+import { logining, addUserMessageAuth } from '../../../redux/actions/auth';
 import '../styles.scss';
 
 const mapStateToProps = ({ reducerAuth }) => ({
   reducerAuth,
 });
 const mapDispatchToProps = dispatch => ({
+  addUserMessageAuth: data => dispatch(addUserMessageAuth(data)),
   logining: (username, userpass) => dispatch(logining(username, userpass)),
 });
 
@@ -17,7 +20,13 @@ class FormLogin extends React.Component {
     this.state = {
       login: '',
       password: '',
+      userMessage: '',
     };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reducerAuth.userMessage !== this.props.reducerAuth.userMessage) {
+      this.setState({ userMessage: nextProps.reducerAuth.userMessage });
+    }
   }
   handleLogin = (event) => {
     this.setState({ login: event.target.value });
@@ -27,11 +36,18 @@ class FormLogin extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.logining(this.state.login, this.state.password);
+    const login = this.state.login.trim();
+    const password = this.state.password.trim();
+    if (login !== '' && password !== '') {
+      this.props.logining(login, password);
+    } else {
+      const data = 'All fields must be filled in';
+      this.props.addUserMessageAuth(data);
+    }
   }
   render() {
-    // const stateMessage = this.state.userMessage;
-    // const message = stateMessage ? <UserMessage data={stateMessage} flag /> : null;
+    const stateMessage = this.state.userMessage;
+    const message = stateMessage ? <UserMessage data={stateMessage} source="AUTH_FORM" flag /> : null;
     const mainPage = this.props.reducerAuth.redirectLogin && localStorage['token.id'] && localStorage['token.id'] !== 'undefined' ? <Redirect to="/" /> : null;
     return (
       <React.Fragment>
@@ -52,6 +68,7 @@ class FormLogin extends React.Component {
               value={this.state.password}
               onChange={this.handlePassword}
             />
+            {message}
           </fieldset>
           <fieldset className="actions">
             <input type="submit" className="submit" value="LOGIN" />
@@ -65,10 +82,18 @@ class FormLogin extends React.Component {
           </fieldset>
         </form>
         {mainPage}
-        {/* {message} */}
       </React.Fragment>
     );
   }
 }
+
+FormLogin.propTypes = {
+  logining: PropTypes.func.isRequired,
+  reducerAuth: PropTypes.shape({
+    login: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    redirectLogin: PropTypes.bool.isRequired,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormLogin);

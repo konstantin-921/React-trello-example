@@ -74,8 +74,9 @@ fieldset  {
   }
 }
 
-.inputs-login { 
+.inputs-login {
   input {
+    position: relative;
     padding: 15px 15px 15px 30px;
     margin: 0 0 10px 0;
     font: 22px 'Lucida Sans Unicode', 'Trebuchet MS', Arial, Helvetica;
@@ -97,6 +98,31 @@ fieldset  {
       -webkit-box-shadow: 0 0 0 1px #e8c291 inset;
       box-shadow: 0 0 0 1px #e8c291 inset;
     }
+  }
+  .container_unsuccessful {
+    position: absolute;
+    bottom: 55px;
+    display: block;
+    width: 300px;
+    min-height: 15px;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: rgb(250, 176, 176);
+    font-size: 16px;
+    color: rgb(107, 12, 12);
+  }
+
+  .container_successful {
+    position: absolute;
+    bottom: 55px;
+    display: block;
+    width: 300px;
+    min-height: 15px;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: rgb(202, 252, 202);
+    font-size: 16px;
+    color: rgb(36, 119, 36);
   }
 }
 

@@ -1,5 +1,4 @@
 const initial = {
-  boards: [],
   tasksTodo: [],
   tasksDoing: [],
   tasksDone: [],

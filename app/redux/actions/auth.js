@@ -11,17 +11,16 @@ export const redirectLogin = (data) => {
   };
 };
 
-export const addUserMessageLogin = (data) => {
+export const addUserMessageAuth = (data) => {
   return {
-    type: 'ADD_USER_MESSAGE_LOGIN',
+    type: 'ADD_USER_MESSAGE_AUTH',
     data,
   };
 };
 
-export const addUserMessageRegistration = (data) => {
+export const hideUserMessage = () => {
   return {
-    type: 'ADD_USER_MESSAGE_REGISTRATION',
-    data,
+    type: 'HIDE_USER_MESSAGE',
   };
 };
 
@@ -36,19 +35,16 @@ export function logining(username, userpass) {
     return axios.get(url)
       .then(help.checkStatus)
       .then(help.saveToken)
-      .then((response) => {
-        if (!response.data.token) {
-          return dispatch(addUserMessageLogin(response.message));
-        }
+      .then(() => {
         return api.post(`${localhost}/auth/secret`)
           .then(help.checkStatus)
           .then(() => dispatch(redirectLogin(true)))
           .catch((error) => {
-            console.log(error);
+            console.log(error.response.data.message);
           });
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(addUserMessageAuth(error.response.data.error.message));
       });
   };
 }
@@ -60,11 +56,11 @@ export function registration(username, userpass, useremail) {
     useremail,
   };
   return (dispatch) => {
-    return api.post(`${localhost}/users`, userSignUp)
+    return api.post(`${localhost}/users/registration`, userSignUp)
       .then(help.checkStatus)
       .then((response) => {
-        const data = response.data.error || response.data;
-        return dispatch(addUserMessageRegistration(data));
+        const data = response.data.message;
+        return dispatch(addUserMessageAuth(data));
       })
       .catch((error) => {
         console.log(error);

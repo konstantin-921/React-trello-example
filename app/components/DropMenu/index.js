@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { reducerBoardsType } from '../../config/propTypes';
 import { getBoard, setCurrentBoard } from '../../redux/actions/boards';
 import FormNewBoard from '../common/FormNewBoard';
 import BoardLink from '../common/BoardLink';
@@ -33,8 +35,7 @@ class DropMenu extends React.Component {
     this.wrapperRef = node;
   }
   setBoard = () => {
-    const id = null;
-    this.props.setCurrentBoard(id);
+    this.props.setCurrentBoard(null);
   }
   handleClickOutside = (event) => {
     const dataRef = this.props.dataRef.current;
@@ -86,5 +87,13 @@ class DropMenu extends React.Component {
     );
   }
 }
+
+DropMenu.propTypes = {
+  dataRef: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  close: PropTypes.func.isRequired,
+  getBoard: PropTypes.func.isRequired,
+  setCurrentBoard: PropTypes.func.isRequired,
+  reducerBoards: reducerBoardsType.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DropMenu);

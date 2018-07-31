@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { reducerBoardsType } from '../../../config/propTypes';
 import { setCurrentBoard, getBoard } from '../../../redux/actions/boards';
 import api from '../../../services/api';
 import './styles.scss';
@@ -22,7 +24,7 @@ class BoardLink extends React.Component {
     };
   }
   setBoard = () => {
-    const { id } = this.props.elem;
+    const id = Number(this.props.elem.id);
     this.props.setCurrentBoard(id);
   }
   deleteBoard = () => {
@@ -33,7 +35,8 @@ class BoardLink extends React.Component {
     api.delete('http://localhost:3000/boards', data)
       .then(() => {
         this.props.getBoard();
-        if (this.props.elem.id === this.props.reducerBoards.currentBoard) {
+        if (Number(this.props.elem.id) === this.props.reducerBoards.currentBoard) {
+          this.props.setCurrentBoard(null);
           this.setState({ redirect: true });
         }
       })
@@ -63,5 +66,11 @@ class BoardLink extends React.Component {
     );
   }
 }
+
+BoardLink.propTypes = {
+  setCurrentBoard: PropTypes.func.isRequired,
+  getBoard: PropTypes.func.isRequired,
+  reducerBoards: reducerBoardsType.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoardLink);

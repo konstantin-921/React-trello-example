@@ -2,8 +2,7 @@ const initial = {
   login: '',
   password: '',
   redirectLogin: false,
-  userMessageLogin: '',
-  userMessageRegistration: '',
+  userMessageAuth: '',
 };
 
 const reducerAuth = (state = initial, action) => {
@@ -14,15 +13,15 @@ const reducerAuth = (state = initial, action) => {
         ...state,
         redirectLogin: data,
       };
-    case 'ADD_USER_MESSAGE_LOGIN':
+    case 'ADD_USER_MESSAGE_AUTH':
       return {
         ...state,
-        userMessageLogin: data,
+        userMessage: data,
       };
-    case 'ADD_USER_MESSAGE_REGISTRATION':
+    case 'HIDE_USER_MESSAGE':
       return {
         ...state,
-        userMessageRegistration: data,
+        userMessage: '',
       };
     default:
       return state;

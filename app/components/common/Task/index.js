@@ -1,6 +1,8 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { elementByTask } from '../../../config/propTypes';
 import { getTasks, removeDefaultTaskTodo, removeDefaultTaskDoing, removeDefaultTaskDone } from '../../../redux/actions/tasks';
 import api from '../../../services/api';
 import './style.scss';
@@ -79,12 +81,27 @@ class Task extends React.Component {
               onClick={this.deleteTask}
             >X
             </button>
-            <div>{content}</div>
+            <div className="content-task">{content}</div>
           </div>
         )}
       </Draggable>
     );
   }
 }
+
+Task.defaultProps = {
+  elem: PropTypes.shape({
+    boards_id: 0,
+  }),
+};
+
+Task.propTypes = {
+  index: PropTypes.number.isRequired,
+  getTasks: PropTypes.func.isRequired,
+  elem: elementByTask,
+  removeDefaultTaskTodo: PropTypes.func.isRequired,
+  removeDefaultTaskDoing: PropTypes.func.isRequired,
+  removeDefaultTaskDone: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Task);

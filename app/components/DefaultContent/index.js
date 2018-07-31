@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import PropTypes from 'prop-types';
+import { reducerDefaultTaskType } from '../../config/propTypes';
 import { reorderDefaultTaskTodo, reorderDefaultTaskDoing, reorderDefaultTaskDone } from '../../redux/actions/tasks';
 import { reorder, move } from '../../services/helpers/helperDnd';
 import Task from '../common/Task';
@@ -210,5 +212,12 @@ class DefaultContent extends React.Component {
     );
   }
 }
+
+DefaultContent.propTypes = {
+  reorderDefaultTaskTodo: PropTypes.func.isRequired,
+  reorderDefaultTaskDoing: PropTypes.func.isRequired,
+  reorderDefaultTaskDone: PropTypes.func.isRequired,
+  reducerTasks: reducerDefaultTaskType.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultContent);

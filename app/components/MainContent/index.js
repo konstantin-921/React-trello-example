@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import PropTypes from 'prop-types';
+import { reducerTasksType } from '../../config/propTypes';
 import Task from '../common/Task';
 import FormNewTask from '../common/FormNewTask';
 import { setCurrentBoard } from '../../redux/actions/boards';
@@ -33,7 +35,7 @@ class MainContent extends React.Component {
     const user = localStorage.getItem('user.id');
     if (this.props.match.params.caption) {
       this.props.getTasks(this.props.match.params.caption, user);
-      this.props.setCurrentBoard(this.props.match.params.caption);
+      this.props.setCurrentBoard(Number(this.props.match.params.caption));
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -211,5 +213,14 @@ class MainContent extends React.Component {
     );
   }
 }
+
+MainContent.propTypes = {
+  getTasks: PropTypes.func.isRequired,
+  setCurrentBoard: PropTypes.func.isRequired,
+  reorderTasksTodo: PropTypes.func.isRequired,
+  reorderTasksDoing: PropTypes.func.isRequired,
+  reorderTasksDone: PropTypes.func.isRequired,
+  reducerTasks: reducerTasksType.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContent);

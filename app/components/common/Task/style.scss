@@ -13,6 +13,11 @@
   .title-task {
     font-weight: bold;
     background-color: #fddc9e;
+    overflow: hidden;
+  }
+
+  .content-task {
+    overflow: hidden;
   }
 
   .button-delete-task {

@@ -1,4 +1,4 @@
-import api from '../../services/api';
+import api from '../api';
 
 const changePosition = (elem) => {
   api.put('http://localhost:3000/tasks', elem)

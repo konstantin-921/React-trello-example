@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getBoard } from '../../../redux/actions/boards';
 import api from '../../../services/api';
 import './styles.scss';
@@ -23,11 +24,11 @@ class FormNewBoard extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      caption: this.state.valueInput,
+      caption: this.state.valueInput.trim(),
       share: false,
       id: Number(localStorage['user.id']),
     };
-    if (this.state.valueInput !== '') {
+    if (data.caption !== '') {
       this.props.close();
       api.post('http://localhost:3000/boards', data)
         .then(() => {
@@ -57,5 +58,10 @@ class FormNewBoard extends React.Component {
     );
   }
 }
+
+FormNewBoard.propTypes = {
+  close: PropTypes.func.isRequired,
+  getBoard: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormNewBoard);
