@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { reducerBoardsType } from '../../../config/propTypes';
 import { setCurrentBoard, getBoard } from '../../../redux/actions/boards';
 import api from '../../../services/api';
+import config from '../../../../config/index';
 import './styles.scss';
 
 const mapStateToProps = ({ reducerBoards }) => ({
@@ -32,7 +33,7 @@ class BoardLink extends React.Component {
     const data = {
       id,
     };
-    api.delete('http://localhost:3000/boards', data)
+    api.delete(`${config.path.BASE_URL}boards`, data)
       .then(() => {
         this.props.getBoard();
         if (Number(this.props.elem.id) === this.props.reducerBoards.currentBoard) {

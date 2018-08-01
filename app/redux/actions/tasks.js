@@ -1,6 +1,5 @@
+import config from '../../../config';
 import api from '../../services/api';
-
-const localhost = 'http://localhost:3000';
 
 export const addDefaultTaskTodo = (data) => {
   return {
@@ -104,7 +103,7 @@ export function getTasks(id, userId) {
     id,
     userId,
   };
-  const url = new URL(`${localhost}/tasks`);
+  const url = new URL(`${config.path.BASE_URL}tasks`);
   url.search = new URLSearchParams(userData);
   return (dispatch) => {
     return api.get(url)

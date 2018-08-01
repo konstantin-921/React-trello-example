@@ -1,6 +1,6 @@
+import config from '../../../config/index';
 import api from '../../services/api';
 
-const localhost = 'http://localhost:3000';
 
 export const receiveBoard = (data) => {
   return {
@@ -26,7 +26,7 @@ export function getBoard() {
   const userData = {
     id: localStorage['user.id'],
   };
-  const url = new URL(`${localhost}/boards`);
+  const url = new URL(`${config.path.BASE_URL}boards`);
   url.search = new URLSearchParams(userData);
   return (dispatch) => {
     return api.get(url)

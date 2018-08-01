@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { elementByTask } from '../../../config/propTypes';
 import { getTasks, removeDefaultTaskTodo, removeDefaultTaskDoing, removeDefaultTaskDone } from '../../../redux/actions/tasks';
+import config from '../../../../config';
 import api from '../../../services/api';
 import './style.scss';
 
@@ -29,7 +30,7 @@ class Task extends React.Component {
   }
   deleteSavedTask = () => {
     const user = localStorage.getItem('user.id');
-    api.delete('http://localhost:3000/tasks', this.props.elem)
+    api.delete(`${config.path.BASE_URL}tasks`, this.props.elem)
       .then(() => {
         this.props.getTasks(this.props.reducerBoards.currentBoard, user);
       })

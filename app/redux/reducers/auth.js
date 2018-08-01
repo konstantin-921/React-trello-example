@@ -1,6 +1,4 @@
 const initial = {
-  login: '',
-  password: '',
   redirectLogin: false,
   userMessageAuth: '',
 };

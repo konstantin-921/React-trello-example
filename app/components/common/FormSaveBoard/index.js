@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { reducerDefaultTaskType } from '../../../config/propTypes';
+import config from '../../../../config';
 import api from '../../../services/api';
 import './styles.scss';
 
@@ -28,7 +29,7 @@ class FormSaveBoard extends React.Component {
     };
     if (data.caption !== '') {
       this.props.close();
-      api.post('http://localhost:3000/boards', data)
+      api.post(`${config.path.BASE_URL}boards`, data)
         .then((response) => {
           const boardsId = Number(response.data);
           const todo = this.props.reducerTasks.defaultTaskTodo;
@@ -38,7 +39,7 @@ class FormSaveBoard extends React.Component {
           const data = array.map((elem) => {
             return { ...elem, boardsId };
           });
-          api.post('http://localhost:3000/tasks', data)
+          api.post(`${config.path.BASE_URL}tasks`, data)
             .catch((error) => {
               console.log(error);
             });

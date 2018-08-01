@@ -102,6 +102,10 @@ class FormRegistration extends React.Component {
 
 FormRegistration.propTypes = {
   registration: PropTypes.func.isRequired,
+  addUserMessageAuth: PropTypes.func.isRequired,
+  reducerAuth: PropTypes.shape({
+    userMessageAuth: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormRegistration);

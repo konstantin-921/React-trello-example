@@ -8,6 +8,7 @@ import DropMenu from '../DropMenu';
 import FormSaveBoard from '../common/FormSaveBoard';
 import MainContent from '../MainContent';
 import DefaultContent from '../DefaultContent';
+import config from '../../../config';
 import api from '../../services/api';
 import './styles.scss';
 
@@ -36,7 +37,7 @@ class MainPage extends React.Component {
       const data = {
         boardId: this.props.reducerBoards.currentBoard,
       };
-      api.put('http://localhost:3000/boards', data)
+      api.put(`${config.path.BASE_URL}boards`, data)
         .then((response) => {
           console.log(response.data);
           const link = this.props.history.location.pathname;

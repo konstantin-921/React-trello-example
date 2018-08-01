@@ -89,10 +89,10 @@ class FormLogin extends React.Component {
 
 FormLogin.propTypes = {
   logining: PropTypes.func.isRequired,
+  addUserMessageAuth: PropTypes.func.isRequired,
   reducerAuth: PropTypes.shape({
-    login: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
     redirectLogin: PropTypes.bool.isRequired,
+    userMessageAuth: PropTypes.string.isRequired,
   }).isRequired,
 };
 

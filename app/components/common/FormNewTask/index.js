@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { reducerTasksAllType } from '../../../config/propTypes';
 import { getTasks, addDefaultTaskTodo, addDefaultTaskDoing, addDefaultTaskDone } from '../../../redux/actions/tasks';
+import config from '../../../../config';
 import api from '../../../services/api';
 import './styles.scss';
 
@@ -24,6 +25,7 @@ class FormNewTask extends React.Component {
     this.state = {
       contentValue: '',
       titleValue: '',
+      borderInput: false,
     };
   }
   onChangeContent = (event) => {
@@ -35,32 +37,35 @@ class FormNewTask extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.props.reducerBoards.currentBoard !== null) {
-      const status = {
-        TO_DO: this.props.reducerTasks.tasksTodo.length,
-        DOING: this.props.reducerTasks.tasksDoing.length,
-        DONE: this.props.reducerTasks.tasksDone.length,
-      };
-      const data = {
-        content: this.state.contentValue.trim(),
-        title: this.state.titleValue.trim(),
-        status: this.props.status,
-        position: status[this.props.status],
-        boards_id: this.props.reducerBoards.currentBoard,
-      };
-      if (data.content !== '' && data.title !== '') {
-        const user = localStorage.getItem('user.id');
-        api.post('http://localhost:3000/tasks', data)
-          .then(() => {
-            this.props.close();
-            this.props.getTasks(this.props.reducerBoards.currentBoard, user);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        console.error('Content not entered');
-      }
+      this.pushToTask();
     } else this.pushToDefaultTask();
+  }
+  pushToTask = () => {
+    const status = {
+      TO_DO: this.props.reducerTasks.tasksTodo.length,
+      DOING: this.props.reducerTasks.tasksDoing.length,
+      DONE: this.props.reducerTasks.tasksDone.length,
+    };
+    const data = {
+      content: this.state.contentValue.trim(),
+      title: this.state.titleValue.trim(),
+      status: this.props.status,
+      position: status[this.props.status],
+      boards_id: this.props.reducerBoards.currentBoard,
+    };
+    if (data.content !== '' && data.title !== '') {
+      const user = localStorage.getItem('user.id');
+      api.post(`${config.path.BASE_URL}tasks`, data)
+        .then(() => {
+          this.props.close();
+          this.props.getTasks(this.props.reducerBoards.currentBoard, user);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      this.warningEmptyFields();
+    }
   }
   pushToDefaultTask = () => {
     const status = {
@@ -86,20 +91,28 @@ class FormNewTask extends React.Component {
       this.props.counter();
       this.props.close();
     } else {
-      console.error('Content not entered');
+      this.warningEmptyFields();
     }
   }
+  warningEmptyFields = () => {
+    this.setState({ borderInput: true });
+    setTimeout(() => {
+      this.setState({ borderInput: false });
+    }, 2000);
+  }
   render() {
+    const title = (this.state.borderInput) ? 'input input-title-task border-red' : 'input input-title-task';
+    const content = (this.state.borderInput) ? 'input input-new-task border-red' : 'input input-title-task';
     return (
       <form onSubmit={this.handleSubmit}>
         <input
-          className="input input-title-task"
-          placeholder="Enter thi title"
+          className={title}
+          placeholder="Enter the title"
           onChange={this.onChangeTitle}
           value={this.state.titleValue}
         />
         <textarea
-          className="input input-new-task"
+          className={content}
           placeholder="Enter the content"
           onChange={this.onChangeContent}
           value={this.state.contentValue}

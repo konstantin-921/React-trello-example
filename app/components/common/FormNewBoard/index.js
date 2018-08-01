@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getBoard } from '../../../redux/actions/boards';
+import config from '../../../../config';
 import api from '../../../services/api';
 import './styles.scss';
 
@@ -30,7 +31,7 @@ class FormNewBoard extends React.Component {
     };
     if (data.caption !== '') {
       this.props.close();
-      api.post('http://localhost:3000/boards', data)
+      api.post(`${config.path.BASE_URL}boards`, data)
         .then(() => {
           this.props.getBoard();
         })

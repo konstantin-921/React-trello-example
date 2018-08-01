@@ -1,7 +1,8 @@
+import config from '../../../config';
 import api from '../api';
 
 const changePosition = (elem) => {
-  api.put('http://localhost:3000/tasks', elem)
+  api.put(`${config.path.BASE_URL}tasks`, elem)
     .then(() => {
       console.log('Success update!');
     })

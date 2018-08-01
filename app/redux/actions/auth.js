@@ -1,8 +1,7 @@
 import axios from 'axios';
 import help from '../../services/helpers/helperLogin';
+import config from '../../../config/index';
 import api from '../../services/api';
-
-const localhost = 'http://localhost:3000';
 
 export const redirectLogin = (data) => {
   return {
@@ -29,14 +28,14 @@ export function logining(username, userpass) {
     username,
     userpass,
   };
-  const url = new URL(`${localhost}/auth/login`);
+  const url = new URL(`${config.path.BASE_URL}auth/login`);
   url.search = new URLSearchParams(userData);
   return (dispatch) => {
     return axios.get(url)
       .then(help.checkStatus)
       .then(help.saveToken)
       .then(() => {
-        return api.post(`${localhost}/auth/secret`)
+        return api.post(`${config.path.BASE_URL}auth/secret`)
           .then(help.checkStatus)
           .then(() => dispatch(redirectLogin(true)))
           .catch((error) => {
@@ -56,7 +55,7 @@ export function registration(username, userpass, useremail) {
     useremail,
   };
   return (dispatch) => {
-    return api.post(`${localhost}/users/registration`, userSignUp)
+    return api.post(`${config.path.BASE_URL}auth/registration`, userSignUp)
       .then(help.checkStatus)
       .then((response) => {
         const data = response.data.message;
