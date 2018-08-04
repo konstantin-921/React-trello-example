@@ -19,7 +19,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     backgroundColor: '#fddc9e',
     overflow: 'hidden',
-    padding: '0 30px 0 5px',
+    padding: '0 5px 0 5px',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },

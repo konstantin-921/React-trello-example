@@ -1,53 +1,35 @@
 import axios from 'axios';
 
 function Api() {
-  this.get = (url) => {
+  this.axios = (method, url, data) => {
     return axios({
-      method: 'get',
+      method,
       url,
+      data: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `bearer ${localStorage.getItem('token.id') || null}`,
       },
     });
+  };
+
+  this.get = (url) => {
+    return this.axios('get', url);
   };
 
   this.post = (url, data) => {
-    return axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${localStorage.getItem('token.id') || null}`,
-      },
-      url,
-      data: JSON.stringify(data),
-    });
+    return this.axios('post', url, data);
   };
 
   this.delete = (url, data) => {
-    return axios({
-      method: 'delete',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${localStorage.getItem('token.id') || null}`,
-      },
-      url,
-      data: JSON.stringify(data),
-    });
+    return this.axios('delete', url, data);
   };
 
   this.put = (url, data) => {
-    return axios({
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${localStorage.getItem('token.id') || null}`,
-      },
-      url,
-      data: JSON.stringify(data),
-    });
+    return this.axios('put', url, data);
   };
 }
 
 const api = new Api();
+
 export default api;

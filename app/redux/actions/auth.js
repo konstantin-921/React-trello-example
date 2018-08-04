@@ -1,4 +1,3 @@
-import axios from 'axios';
 import help from '../../services/helpers/helperLogin';
 import config from '../../../config/index';
 import api from '../../services/api';
@@ -31,7 +30,7 @@ export function logining(username, userpass) {
   const url = new URL(`${config.path.BASE_URL}auth/login`);
   url.search = new URLSearchParams(userData);
   return (dispatch) => {
-    return axios.get(url)
+    return api.get(url)
       .then(help.checkStatus)
       .then(help.saveToken)
       .then(() => {
