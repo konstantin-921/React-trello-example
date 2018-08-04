@@ -1,4 +1,5 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,7 +7,7 @@ import { reducerBoardsType } from '../../../config/propTypes';
 import { setCurrentBoard, getBoard } from '../../../redux/actions/boards';
 import api from '../../../services/api';
 import config from '../../../../config/index';
-import './styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerBoards }) => ({
   reducerBoards,
@@ -49,16 +50,16 @@ class BoardLink extends React.Component {
     const { caption, id } = this.props.elem;
     const redirectToDefault = (this.state.redirect) ? <Redirect to="/" /> : null;
     return (
-      <li className="link-board-container">
+      <li className={css(styles.linkBoardContainer)}>
         <Link
-          className="link-board"
+          className={css(styles.linkBoard)}
           onClick={this.setBoard}
           href={`/${id}`}
           to={`/${id}`}
         > {caption}
         </Link>
         <button
-          className="button-delete-board"
+          className={css(styles.buttonDeleteBoard)}
           onClick={this.deleteBoard}
         >X
         </button>

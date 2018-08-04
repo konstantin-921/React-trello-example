@@ -1,4 +1,5 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Link, Switch } from 'react-router-dom';
@@ -10,7 +11,7 @@ import MainContent from '../MainContent';
 import DefaultContent from '../DefaultContent';
 import config from '../../../config';
 import api from '../../services/api';
-import './styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
   reducerTasks,
@@ -69,8 +70,8 @@ class MainPage extends React.Component {
   }
   render() {
     const classSaveButton = (this.props.reducerBoards.currentBoard) ?
-      'button button-save-board button-save-board-disable'
-      : 'button button-save-board';
+      css(styles.button, styles.buttonSaveBoard, styles.buttonSaveBoardDisable) :
+      css(styles.button, styles.buttonSaveBoard);
     const saveBoardForm = (this.state.toggleFormSaveBoard) ?
       <FormSaveBoard close={this.closeSaveBoardForm} />
       : null;
@@ -78,18 +79,18 @@ class MainPage extends React.Component {
       <DropMenu dataRef={this.buttonBoard} close={this.closeDropMenu} /> : null;
     return (
       <div
-        className="container"
+        className={css(styles.container)}
       >
-        <div className="header">
+        <div className={css(styles.header)}>
           <button
-            className="button"
+            className={css(styles.button)}
             ref={this.buttonBoard}
             onClick={this.toggleDropdown}
           >
             Boards
           </button>
           <div
-            className="dropMenu-container"
+            className={css(styles.dropMenuContainer)}
           >
             {dropMenu}
           </div>
@@ -100,13 +101,13 @@ class MainPage extends React.Component {
           </button>
           {saveBoardForm}
           <button
-            className="button button-share"
+            className={css(styles.button, styles.buttonShare)}
             onClick={this.shareBoard}
           >
             Share
           </button>
           <input
-            className="input share-input"
+            className={css(styles.shareInput)}
             value={this.state.shareLink}
           />
           <Link
@@ -114,7 +115,7 @@ class MainPage extends React.Component {
             to="/login"
           >
             <button
-              className="button button-logout"
+              className={css(styles.button, styles.buttonLogout)}
               onClick={this.logout}
             >
               Log out

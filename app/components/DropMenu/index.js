@@ -1,4 +1,5 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -6,7 +7,7 @@ import { reducerBoardsType } from '../../config/propTypes';
 import { getBoard, setCurrentBoard } from '../../redux/actions/boards';
 import FormNewBoard from '../common/FormNewBoard';
 import BoardLink from '../common/BoardLink';
-import './styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerBoards }) => ({
   reducerBoards,
@@ -62,13 +63,13 @@ class DropMenu extends React.Component {
       <div
         ref={this.setWrapperRef}
         id="dropMenu"
-        className="dropMenu"
+        className={css(styles.dropMenu)}
       >
         <ul>
           <li>
             <Link
               onClick={this.setBoard}
-              className="link-board"
+              className={css(styles.linkBoard)}
               href="/"
               to="/"
             > Default board
@@ -77,7 +78,7 @@ class DropMenu extends React.Component {
           {boards}
         </ul>
         <button
-          className="button button-new-board"
+          className={css(styles.button, styles.buttonNewBoard)}
           onClick={this.toggleNewBoard}
         >
           New board

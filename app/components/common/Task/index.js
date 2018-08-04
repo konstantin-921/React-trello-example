@@ -1,4 +1,5 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,7 +7,7 @@ import { elementByTask } from '../../../config/propTypes';
 import { getTasks, removeDefaultTaskTodo, removeDefaultTaskDoing, removeDefaultTaskDone } from '../../../redux/actions/tasks';
 import config from '../../../../config';
 import api from '../../../services/api';
-import './style.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
   reducerTasks,
@@ -39,30 +40,28 @@ class Task extends React.Component {
       });
   }
   deleteDefaultTask = () => {
-    if (this.props.elem.status === 'TO_DO') {
-      const array = this.props.reducerTasks.defaultTaskTodo.filter((elem) => {
-        return elem.id !== this.props.elem.id;
-      });
-      this.sortByIndex(array);
-      this.props.removeDefaultTaskTodo(array);
-    } else if (this.props.elem.status === 'DOING') {
-      const array = this.props.reducerTasks.defaultTaskDoing.filter((elem) => {
-        return elem.id !== this.props.elem.id;
-      });
-      this.sortByIndex(array);
-      this.props.removeDefaultTaskDoing(array);
-    } else if (this.props.elem.status === 'DONE') {
-      const array = this.props.reducerTasks.defaultTaskDone.filter((elem) => {
-        return elem.id !== this.props.elem.id;
-      });
-      this.sortByIndex(array);
-      this.props.removeDefaultTaskDone(array);
-    }
-  }
-  sortByIndex = (arr) => {
-    arr.forEach((elem, index) => {
+    this.idAction = {
+      TO_DO: this.props.removeDefaultTaskTodo,
+      DOING: this.props.removeDefaultTaskDoing,
+      DONE: this.props.removeDefaultTaskDone,
+    };
+    this.status = {
+      TO_DO: this.props.reducerTasks.defaultTaskTodo,
+      DOING: this.props.reducerTasks.defaultTaskDoing,
+      DONE: this.props.reducerTasks.defaultTaskDone,
+    };
+    this.action = (array) => {
+      this.idAction[this.props.elem.status](array);
+    };
+
+    const array = this.status[this.props.elem.status].filter((elem) => {
+      return elem.id !== this.props.elem.id;
+    });
+    array.forEach((elem, index) => {
       elem.position = index; // eslint-disable-line no-param-reassign
     });
+
+    this.action(array);
   }
   render() {
     const { content, title } = this.props.elem;
@@ -71,18 +70,18 @@ class Task extends React.Component {
       <Draggable key={elem.id} draggableId={elem.id} index={index}>
         {provided => (
           <div
-            className="task"
+            className={css(styles.task)}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <div className="title-task">{title}</div>
+            <div className={css(styles.titleTask)}>{title}</div>
             <button
-              className="button button-delete-task"
+              className={css(styles.button, styles.buttonDeleteTask)}
               onClick={this.deleteTask}
             >X
             </button>
-            <div className="content-task">{content}</div>
+            <div className={css(styles.contentTask)}>{content}</div>
           </div>
         )}
       </Draggable>

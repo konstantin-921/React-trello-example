@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { css } from 'aphrodite/no-important';
 import { hideUserMessage } from '../../../redux/actions/auth';
+import styles from './styles';
+
 
 const mapStateToProps = ({ reducerAuth }) => ({
   reducerAuth,
@@ -17,10 +20,8 @@ class UserMessage extends React.PureComponent {
   }
   render() {
     const text = this.props.data;
-    let customStyle = '';
-    if (this.props.source === 'AUTH_FORM') {
-      customStyle = this.props.flag ? 'container_unsuccessful' : 'container_successful';
-    }
+    const customStyle = this.props.flag ?
+      css(styles.container_unsuccessful) : css(styles.container_successful);
     return (
       <div
         className={customStyle}

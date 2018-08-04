@@ -1,10 +1,11 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { reducerDefaultTaskType } from '../../../config/propTypes';
 import config from '../../../../config';
 import api from '../../../services/api';
-import './styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerTasks }) => ({
   reducerTasks,
@@ -55,13 +56,13 @@ class FormSaveBoard extends React.Component {
     return (
       <form style={{ display: 'flex', width: '250px' }} onSubmit={this.handleSubmit}>
         <input
-          className="input input-save-board"
+          className={css(styles.inputSaveBoard)}
           placeholder="Enter name of board"
           onChange={this.onChangeInput}
           value={this.state.valueInput}
         />
         <button
-          className="button button-share-input"
+          className={css(styles.button, styles.buttonShareInput)}
         >Ok
         </button>
       </form>

@@ -1,10 +1,11 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getBoard } from '../../../redux/actions/boards';
 import config from '../../../../config';
 import api from '../../../services/api';
-import './styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerBoards }) => ({
   reducerBoards,
@@ -13,7 +14,6 @@ const mapStateToProps = ({ reducerBoards }) => ({
 const mapDispatchToProps = dispatch => ({
   getBoard: () => dispatch(getBoard()),
 });
-
 
 class FormNewBoard extends React.Component {
   constructor(props) {
@@ -47,14 +47,14 @@ class FormNewBoard extends React.Component {
   }
   render() {
     return (
-      <form className="form-new-board" onSubmit={this.handleSubmit}>
+      <form className={css(styles.formNewBoard)} onSubmit={this.handleSubmit}>
         <input
-          className="input input-new-board"
+          className={css(styles.inputNewBoard)}
           placeholder="Enter board name"
           onChange={this.changeInput}
           value={this.state.valueInput}
         />
-        <button className="button button-new-board">Add</button>
+        <button className={css(styles.button, styles.buttonNewBoard)}>Add</button>
       </form>
     );
   }

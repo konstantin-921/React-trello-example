@@ -1,10 +1,11 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { registration, addUserMessageAuth } from '../../../redux/actions/auth';
 import UserMessage from '../../common/UserMessage';
-import '../styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerAuth }) => ({
   reducerAuth,
@@ -55,16 +56,17 @@ class FormRegistration extends React.Component {
   render() {
     const stateMessage = this.state.userMessage;
     const flag = this.state.userMessage !== 'Successful registration!';
-    const message = stateMessage ? <UserMessage data={stateMessage} source="AUTH_FORM" flag={flag} /> : null;
+    const message = stateMessage ? <UserMessage data={stateMessage} flag={flag} /> : null;
     return (
       <React.Fragment>
-        <form onSubmit={this.handleSubmit} className="auth registration">
-          <h1>Registration form</h1>
-          <fieldset className="inputs-login">
+        <form onSubmit={this.handleSubmit} className={css(styles.auth, styles.registration)}>
+          <h1 className={css(styles.title)}>Registration form</h1>
+          <fieldset className={css(styles.fieldset)}>
             <input
               name="login"
               type="text"
               placeholder="login"
+              className={css(styles.input)}
               value={this.state.login}
               onChange={this.handleLogin}
             />
@@ -72,6 +74,7 @@ class FormRegistration extends React.Component {
               name="pass"
               type="text"
               placeholder="password"
+              className={css(styles.input)}
               value={this.state.password}
               onChange={this.handlePassword}
             />
@@ -79,15 +82,16 @@ class FormRegistration extends React.Component {
               name="email"
               type="text"
               placeholder="email"
+              className={css(styles.input)}
               value={this.state.email}
               onChange={this.handleEmail}
             />
             {message}
           </fieldset>
-          <fieldset className="actions">
-            <input type="submit" className="submit" value="REGISTRATION" />
+          <fieldset className={css(styles.fieldset, styles.actions)}>
+            <input type="submit" className={css(styles.button)} value="REGISTRATION" />
             <Link
-              className="link-form"
+              className={css(styles.linkForm)}
               href="/login"
               to="/login"
             >

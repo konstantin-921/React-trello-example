@@ -1,10 +1,11 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import UserMessage from '../../common/UserMessage';
 import { logining, addUserMessageAuth } from '../../../redux/actions/auth';
-import '../styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerAuth }) => ({
   reducerAuth,
@@ -47,17 +48,18 @@ class FormLogin extends React.Component {
   }
   render() {
     const stateMessage = this.state.userMessage;
-    const message = stateMessage ? <UserMessage data={stateMessage} source="AUTH_FORM" flag /> : null;
+    const message = stateMessage ? <UserMessage data={stateMessage} flag /> : null;
     const mainPage = this.props.reducerAuth.redirectLogin && localStorage['token.id'] && localStorage['token.id'] !== 'undefined' ? <Redirect to="/" /> : null;
     return (
       <React.Fragment>
-        <form onSubmit={this.handleSubmit} className="auth">
-          <h1>Login form</h1>
-          <fieldset className="inputs-login">
+        <form onSubmit={this.handleSubmit} className={css(styles.auth)}>
+          <h1 className={css(styles.title)}>Login form</h1>
+          <fieldset className={css(styles.fieldset)}>
             <input
               name="login"
               type="text"
               placeholder="login"
+              className={css(styles.input)}
               value={this.state.login}
               onChange={this.handleLogin}
             />
@@ -65,15 +67,16 @@ class FormLogin extends React.Component {
               name="pass"
               type="text"
               placeholder="password"
+              className={css(styles.input)}
               value={this.state.password}
               onChange={this.handlePassword}
             />
             {message}
           </fieldset>
-          <fieldset className="actions">
-            <input type="submit" className="submit" value="LOGIN" />
+          <fieldset className={css(styles.fieldset, styles.actions)}>
+            <input type="submit" className={css(styles.button)} value="LOGIN" />
             <Link
-              className="link-form"
+              className={css(styles.linkForm)}
               href="/registration"
               to="/registration"
             >

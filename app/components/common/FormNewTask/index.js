@@ -1,11 +1,12 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { reducerTasksAllType } from '../../../config/propTypes';
 import { getTasks, addDefaultTaskTodo, addDefaultTaskDoing, addDefaultTaskDone } from '../../../redux/actions/tasks';
 import config from '../../../../config';
 import api from '../../../services/api';
-import './styles.scss';
+import styles from './styles';
 
 const mapStateToProps = ({ reducerTasks, reducerBoards }) => ({
   reducerTasks,
@@ -38,9 +39,12 @@ class FormNewTask extends React.Component {
     event.preventDefault();
     if (this.props.reducerBoards.currentBoard !== null) {
       this.pushToTask();
-    } else this.pushToDefaultTask();
+    } else {
+      this.pushToDefaultTask();
+    }
   }
   pushToTask = () => {
+    // Save task in data base
     const status = {
       TO_DO: this.props.reducerTasks.tasksTodo.length,
       DOING: this.props.reducerTasks.tasksDoing.length,
@@ -68,6 +72,7 @@ class FormNewTask extends React.Component {
     }
   }
   pushToDefaultTask = () => {
+    // Save task in redux-store
     const status = {
       TO_DO: this.props.reducerTasks.defaultTaskTodo.length,
       DOING: this.props.reducerTasks.defaultTaskDoing.length,
@@ -95,14 +100,17 @@ class FormNewTask extends React.Component {
     }
   }
   warningEmptyFields = () => {
-    this.setState({ borderInput: true });
-    setTimeout(() => {
-      this.setState({ borderInput: false });
-    }, 2000);
+    this.setState({ borderInput: true }, () => {
+      setTimeout(() => {
+        this.setState({ borderInput: false });
+      }, 500);
+    });
   }
   render() {
-    const title = (this.state.borderInput) ? 'input input-title-task border-red' : 'input input-title-task';
-    const content = (this.state.borderInput) ? 'input input-new-task border-red' : 'input input-title-task';
+    const title = (this.state.borderInput) ?
+      css(styles.inputTask, styles.borderRed) : css(styles.inputTask);
+    const content = (this.state.borderInput) ?
+      css(styles.inputTask, styles.borderRed) : css(styles.inputTask);
     return (
       <form onSubmit={this.handleSubmit}>
         <input
@@ -117,7 +125,7 @@ class FormNewTask extends React.Component {
           onChange={this.onChangeContent}
           value={this.state.contentValue}
         />
-        <button className="button button-new-task">
+        <button className={css(styles.button, styles.buttonNewTask)}>
           Send
         </button>
       </form>

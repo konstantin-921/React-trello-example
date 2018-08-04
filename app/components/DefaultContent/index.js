@@ -1,4 +1,5 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
@@ -7,7 +8,7 @@ import { reorderDefaultTaskTodo, reorderDefaultTaskDoing, reorderDefaultTaskDone
 import { reorder, move } from '../../services/helpers/helperDnd';
 import Task from '../common/Task';
 import FormNewTask from '../common/FormNewTask';
-
+import styles from './styles';
 
 const mapStateToProps = ({ reducerTasks }) => ({
   reducerTasks,
@@ -150,17 +151,17 @@ class DefaultContent extends React.Component {
     const formDoing = this.openNewTaskDoing();
     const formDone = this.openNewTaskDone();
     return (
-      <div className="main">
+      <div className={css(styles.main)}>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
             {provided => (
               <div
-                className="task-container"
+                className={css(styles.taskContainer)}
                 ref={provided.innerRef}
               >
-                <h2 className="title-task-container">To do</h2>
+                <h2>To do</h2>
                 <button
-                  className="add-link"
+                  className={css(styles.addLink)}
                   onClick={this.toggleFormTodo}
                 > Add task
                 </button>
@@ -173,12 +174,12 @@ class DefaultContent extends React.Component {
           <Droppable droppableId="droppable2">
             {provided => (
               <div
-                className="task-container"
+                className={css(styles.taskContainer)}
                 ref={provided.innerRef}
               >
-                <h2 className="title-task-container">Doing</h2>
+                <h2>Doing</h2>
                 <button
-                  className="add-link"
+                  className={css(styles.addLink)}
                   onClick={this.toggleFormDoing}
                 >
                   Add task
@@ -192,12 +193,12 @@ class DefaultContent extends React.Component {
           <Droppable droppableId="droppable3">
             {provided => (
               <div
-                className="task-container"
+                className={css(styles.taskContainer)}
                 ref={provided.innerRef}
               >
-                <h2 className="title-task-container">Done</h2>
+                <h2>Done</h2>
                 <button
-                  className="add-link"
+                  className={css(styles.addLink)}
                   onClick={this.toggleFormDone}
                 >Add task
                 </button>

@@ -33,6 +33,7 @@
     }
   },
   "dependencies": {
+    "aphrodite": "^2.2.2",
     "axios": "^0.18.0",
     "connected-react-router": "^4.3.0",
     "cross-env": "5.1.6",

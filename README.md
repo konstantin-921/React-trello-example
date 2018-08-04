@@ -5,19 +5,18 @@ Make sure you have the latest Stable or LTS version of Node.js installed.
 1. `git clone https://github.com/konstantin-921/React-trello-example.git`
 2. Run `npm install` or `yarn install`
 3. Start the dev server using `npm start`
-3. Open [http://localhost:8080](http://localhost:8080)
+3. Open [http://localhost:8080]
 
-## Available Commands
+This is a front side application for repo Node.js-trello-example.
 
-- `npm start` - start the dev server
-- `npm clean` - delete the dist folder
-- `npm run production` - create a production ready build in `dist` folder
-- `npm run lint` - execute an eslint check
-- `npm test` - run all tests
-- `npm run test:watch` - run all tests in watch mode
-- `npm run coverage` - generate code coverage report in the `coverage` folder
+## Functionality overview
 
-## Production code
+An application for exchanging messages between users (trello analog)
 
-Run `npm run production`. The production-ready code will be located under `dist` folder.
+### General functionality:
 
+- Authenticate users via JWT (login/signup pages + logout button on settings page)
+- Adding and removing boards for placing tasks
+- Adding and removing tasks
+- Drag and drop tasks (use react-beautiful-dnd (8.0.5))
+- Having a function to share a board
