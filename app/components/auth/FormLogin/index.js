@@ -46,10 +46,17 @@ class FormLogin extends React.Component {
       this.props.addUserMessageAuth(data);
     }
   }
+  mainPage = () => {
+    if (this.props.reducerAuth.redirectLogin
+      && localStorage['token.id']
+      && localStorage['token.id'] !== 'undefined') {
+      return <Redirect to="/" />;
+    } return null;
+  }
   render() {
     const stateMessage = this.state.userMessage;
     const message = stateMessage ? <UserMessage data={stateMessage} flag /> : null;
-    const mainPage = this.props.reducerAuth.redirectLogin && localStorage['token.id'] && localStorage['token.id'] !== 'undefined' ? <Redirect to="/" /> : null;
+    const mainPage = this.mainPage();
     return (
       <React.Fragment>
         <form onSubmit={this.handleSubmit} className={css(styles.auth)}>
