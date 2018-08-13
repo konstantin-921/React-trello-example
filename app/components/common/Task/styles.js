@@ -6,8 +6,7 @@ export default StyleSheet.create({
     position: 'relative',
     width: '70%',
     minHeight: '30px',
-    backgroundColor: 'aliceblue',
-    margin: '10px auto',
+    margin: '4px 0px',
     borderRadius: '4px',
     color: '#555555',
     fontSize: '16px',
@@ -26,6 +25,7 @@ export default StyleSheet.create({
 
   contentTask: {
     overflow: 'hidden',
+    backgroundColor: 'aliceblue',
     padding: '0 5px 0 5px',
   },
 

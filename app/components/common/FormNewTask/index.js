@@ -112,7 +112,10 @@ class FormNewTask extends React.Component {
     const content = (this.state.borderInput) ?
       css(styles.inputTask, styles.borderRed) : css(styles.inputTask);
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form
+        className={css(styles.form)}
+        onSubmit={this.handleSubmit}
+      >
         <input
           className={title}
           placeholder="Enter the title"

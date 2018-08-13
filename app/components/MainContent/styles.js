@@ -9,6 +9,9 @@ export default StyleSheet.create({
   },
 
   taskContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     width: '32%',
     marginTop: '5px',
     borderRadius: '3px',

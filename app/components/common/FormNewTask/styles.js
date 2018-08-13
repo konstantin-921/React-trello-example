@@ -2,13 +2,19 @@ import { StyleSheet } from 'aphrodite';
 import { button } from '../../../assets/common styles/button';
 
 export default StyleSheet.create({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '60%',
+  },
+
   inputTask: {
     height: 'auto',
     padding: '5px',
-    width: '70%',
+    width: '100%',
     minWidth: '50px',
     display: 'block',
-    margin: '5px auto',
+    margin: '3px auto',
     fontSize: '16px',
     borderRadius: '5px',
     border: 'none',
@@ -32,7 +38,7 @@ export default StyleSheet.create({
     display: 'block',
     float: 'none',
     margin: '0 auto',
-    width: '25%',
+    width: '35%',
   },
 
 });
