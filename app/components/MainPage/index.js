@@ -35,14 +35,14 @@ class MainPage extends React.Component {
   }
   shareBoard = () => {
     if (this.props.reducerBoards.currentBoard !== null) {
-      const boardId = this.props.reducerBoards.currentBoard;
       const data = {
-        boardId,
+        boardId: this.props.reducerBoards.currentBoard,
       };
       api.put(`${config.path.BASE_URL}boards`, data)
-        .then(() => {
-          const share = localStorage.getItem('token.id');
-          this.setState({ shareLink: `http://localhost:8080/${boardId}/share?boardId=${boardId}&token=${share}` });
+        .then((response) => {
+          console.log(response.data);
+          const link = this.props.history.location.pathname;
+          this.setState({ shareLink: `http://localhost:8080${link}` });
         })
         .catch((error) => {
           console.log(error);
