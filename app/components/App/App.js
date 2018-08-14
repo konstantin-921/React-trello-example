@@ -10,9 +10,7 @@ const App = (props) => {
   if (str.includes('share')) {
     startPage = <Route path="/" component={MainPage} />;
     const token = props.location.search.substring(19);
-    if (!localStorage.getItem('token.id')) {
-      localStorage['token.id'] = token;
-    }
+    localStorage['token.id'] = token;
   } else {
     startPage = (token && user && user !== 'undefined' && token !== 'undefined') ? <Route path="/" component={MainPage} /> : <Redirect to="/login" />;
   }
