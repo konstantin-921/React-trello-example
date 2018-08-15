@@ -9,7 +9,7 @@ const App = (props) => {
   let startPage = '';
   if (str.includes('share')) {
     startPage = <Route path="/" component={MainPage} />;
-    const token = props.location.search.substring(19);
+    const token = props.location.search.substring(7);
     if (!localStorage.getItem('token.id')) {
       localStorage['token.id'] = token;
     }

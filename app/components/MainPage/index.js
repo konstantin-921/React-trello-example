@@ -42,7 +42,7 @@ class MainPage extends React.Component {
       api.put(`${config.path.BASE_URL}boards`, data)
         .then(() => {
           const share = localStorage.getItem('token.id');
-          this.setState({ shareLink: `http://localhost:8080/${boardId}/share?boardId=${boardId}&token=${share}` });
+          this.setState({ shareLink: `http://localhost:8080/${boardId}/share?token=${share}` });
         })
         .catch((error) => {
           console.log(error);
