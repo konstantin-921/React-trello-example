@@ -13,7 +13,6 @@ const App = (props) => {
     if (!localStorage.getItem('token.id')) {
       localStorage['token.id'] = token;
     }
-    localStorage['token.id'] = token;
   } else {
     startPage = (token && user && user !== 'undefined' && token !== 'undefined') ? <Route path="/" component={MainPage} /> : <Redirect to="/login" />;
   }
